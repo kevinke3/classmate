@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Overview of your school analytics{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid" id="statsGrid">
+    <div class="stat-card accent animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent">
+                <i class="lucide-graduation-cap"></i>
+            </div>
+            <div class="stat-card-trend up">
+                <i class="lucide-trending-up"></i>
+                <span>+12%</span>
+            </div>
+        </div>
+        <div class="stat-card-value counter-animate" data-target="1247">0</div>
+        <div class="stat-card-label">Total Students</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success">
+                <i class="lucide-users"></i>
+            </div>
+            <div class="stat-card-trend up">
+                <i class="lucide-trending-up"></i>
+                <span>+3</span>
+            </div>
+        </div>
+        <div class="stat-card-value counter-animate" data-target="86">0</div>
+        <div class="stat-card-label">Total Teachers</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info">
+                <i class="lucide-calendar-check"></i>
+            </div>
+            <div class="stat-card-trend up">
+                <i class="lucide-trending-up"></i>
+                <span>+2.4%</span>
+            </div>
+        </div>
+        <div class="stat-card-value counter-animate" data-target="94">0</div>
+        <div class="stat-card-label">Attendance Rate %</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.4s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning">
+                <i class="lucide-wallet"></i>
+            </div>
+            <div class="stat-card-trend up">
+                <i class="lucide-trending-up"></i>
+                <span>+18%</span>
+            </div>
+        </div>
+        <div class="stat-card-value counter-animate" data-target="2450000" data-prefix="KES ">0</div>
+        <div class="stat-card-label">Fee Collection</div>
+    </div>
+</div>
+
+<div class="chart-section">
+    <div class="chart-card animate-fade-in" style="animation-delay: 0.5s">
+        <div class="chart-card-header">
+            <h3 class="chart-card-title">Attendance Overview</h3>
+            <div class="chart-tabs">
+                <button class="chart-tab active" data-period="week">Week</button>
+                <button class="chart-tab" data-period="month">Month</button>
+                <button class="chart-tab" data-period="term">Term</button>
+            </div>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="attendanceChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card animate-fade-in" style="animation-delay: 0.6s">
+        <div class="chart-card-header">
+            <h3 class="chart-card-title">Revenue</h3>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-section">
+    <div class="data-card animate-fade-in" style="animation-delay: 0.7s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Recent Activity</h3>
+            <button class="btn btn-ghost btn-sm">View All</button>
+        </div>
+        <div class="data-card-body" id="activityFeed">
+            <div class="activity-item">
+                <div class="activity-dot red"></div>
+                <div>
+                    <div class="activity-text">New student admission - Grace Wanjiku</div>
+                    <div class="activity-time">2 minutes ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                    <div class="activity-text">Fee payment of KES 45,000 received</div>
+                    <div class="activity-time">15 minutes ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot blue"></div>
+                <div>
+                    <div class="activity-text">Exam results published for Form 3</div>
+                    <div class="activity-time">1 hour ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot yellow"></div>
+                <div>
+                    <div class="activity-text">Staff meeting scheduled for Friday</div>
+                    <div class="activity-time">3 hours ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                    <div class="activity-text">Attendance marked for all Form 1 classes</div>
+                    <div class="activity-time">5 hours ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-card animate-fade-in" style="animation-delay: 0.8s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Upcoming Events</h3>
+            <button class="btn btn-ghost btn-sm">Calendar</button>
+        </div>
+        <div class="data-card-body">
+            <div class="event-card">
+                <div class="event-date-box">
+                    <div class="event-date-day">28</div>
+                    <div class="event-date-month">Jun</div>
+                </div>
+                <div class="event-info">
+                    <h4>End of Term Exams Begin</h4>
+                    <p>All classes - Main Hall</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-date-box">
+                    <div class="event-date-day">02</div>
+                    <div class="event-date-month">Jul</div>
+                </div>
+                <div class="event-info">
+                    <h4>Parent-Teacher Conference</h4>
+                    <p>Form 4 Parents - Auditorium</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-date-box">
+                    <div class="event-date-day">10</div>
+                    <div class="event-date-month">Jul</div>
+                </div>
+                <div class="event-info">
+                    <h4>Sports Day</h4>
+                    <p>All Students - Sports Field</p>
+                </div>
+            </div>
+            <div class="event-card">
+                <div class="event-date-box">
+                    <div class="event-date-day">15</div>
+                    <div class="event-date-month">Jul</div>
+                </div>
+                <div class="event-info">
+                    <h4>Term Closes</h4>
+                    <p>Report cards collection</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="data-card animate-fade-in" style="animation-delay: 0.9s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Quick Actions</h3>
+        </div>
+        <div class="quick-actions">
+            <button class="quick-action-btn" onclick="window.location.href='/students'">
+                <i class="lucide-user-plus"></i>
+                <span>Add Student</span>
+            </button>
+            <button class="quick-action-btn" onclick="window.location.href='/attendance'">
+                <i class="lucide-calendar-check"></i>
+                <span>Mark Attendance</span>
+            </button>
+            <button class="quick-action-btn" onclick="window.location.href='/finance'">
+                <i class="lucide-receipt"></i>
+                <span>Record Payment</span>
+            </button>
+            <button class="quick-action-btn" onclick="window.location.href='/messages'">
+                <i class="lucide-send"></i>
+                <span>Send Message</span>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/pages/dashboard.js') }}"></script>
+{% endblock %}

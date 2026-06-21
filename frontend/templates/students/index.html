@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Students{% endblock %}
+{% block nav_students %}active{% endblock %}
+{% block page_title %}Students{% endblock %}
+{% block page_subtitle %}Manage student records and admissions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="view-toggle">
+            <button class="view-toggle-btn active" data-view="cards" id="cardViewBtn">
+                <i class="lucide-layout-grid"></i>
+            </button>
+            <button class="view-toggle-btn" data-view="table" id="tableViewBtn">
+                <i class="lucide-list"></i>
+            </button>
+        </div>
+        <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+            <span id="studentCount">0</span> students
+        </span>
+    </div>
+    <button class="btn btn-primary" id="addStudentBtn">
+        <i class="lucide-plus"></i>
+        Add Student
+    </button>
+</div>
+
+<div class="filters-bar">
+    <div class="table-search">
+        <i class="lucide-search"></i>
+        <input type="text" placeholder="Search students..." id="searchInput">
+    </div>
+    <select class="table-filter" id="classFilter">
+        <option value="">All Classes</option>
+        <option value="1">Form 1</option>
+        <option value="2">Form 2</option>
+        <option value="3">Form 3</option>
+        <option value="4">Form 4</option>
+    </select>
+    <select class="table-filter" id="statusFilter">
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+        <option value="">All</option>
+    </select>
+</div>
+
+<div class="student-cards" id="studentCards">
+    <div class="student-card animate-fade-in">
+        <div class="student-card-header">
+            <div class="student-card-avatar">GW</div>
+            <div>
+                <div class="student-card-name">Grace Wanjiku</div>
+                <div class="student-card-id">ADM/2024/001</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Class</span>
+                <span class="student-detail-value">Form 3 East</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Attendance</span>
+                <span class="student-detail-value">96%</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Average</span>
+                <span class="student-detail-value">B+</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+    <div class="student-card animate-fade-in" style="animation-delay: 0.1s">
+        <div class="student-card-header">
+            <div class="student-card-avatar">JO</div>
+            <div>
+                <div class="student-card-name">James Ochieng</div>
+                <div class="student-card-id">ADM/2024/002</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Class</span>
+                <span class="student-detail-value">Form 2 West</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Attendance</span>
+                <span class="student-detail-value">89%</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Average</span>
+                <span class="student-detail-value">A-</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+    <div class="student-card animate-fade-in" style="animation-delay: 0.2s">
+        <div class="student-card-header">
+            <div class="student-card-avatar">FK</div>
+            <div>
+                <div class="student-card-name">Faith Kamau</div>
+                <div class="student-card-id">ADM/2024/003</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Class</span>
+                <span class="student-detail-value">Form 4 East</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Attendance</span>
+                <span class="student-detail-value">98%</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Average</span>
+                <span class="student-detail-value">A</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+    <div class="student-card animate-fade-in" style="animation-delay: 0.3s">
+        <div class="student-card-header">
+            <div class="student-card-avatar">DM</div>
+            <div>
+                <div class="student-card-name">David Mwangi</div>
+                <div class="student-card-id">ADM/2024/004</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Class</span>
+                <span class="student-detail-value">Form 1 North</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Attendance</span>
+                <span class="student-detail-value">91%</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Average</span>
+                <span class="student-detail-value">B</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-container" id="studentTable" style="display: none;">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Admission No.</th>
+                <th>Class</th>
+                <th>Attendance</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentTableBody">
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pages/students.js') }}"></script>
+{% endblock %}

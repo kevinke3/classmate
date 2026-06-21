@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Settings{% endblock %}
+{% block nav_settings %}active{% endblock %}
+{% block page_title %}Settings{% endblock %}
+{% block page_subtitle %}Manage your account and preferences{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 240px 1fr; gap: 24px;">
+    <div class="card" style="height: fit-content;">
+        <nav style="display: flex; flex-direction: column; gap: 2px;">
+            <a href="#" class="nav-item active" style="font-size: var(--font-size-sm);">
+                <i class="lucide-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="nav-item" style="font-size: var(--font-size-sm);">
+                <i class="lucide-lock"></i>
+                <span>Security</span>
+            </a>
+            <a href="#" class="nav-item" style="font-size: var(--font-size-sm);">
+                <i class="lucide-bell"></i>
+                <span>Notifications</span>
+            </a>
+            <a href="#" class="nav-item" style="font-size: var(--font-size-sm);">
+                <i class="lucide-palette"></i>
+                <span>Appearance</span>
+            </a>
+            <a href="#" class="nav-item" style="font-size: var(--font-size-sm);">
+                <i class="lucide-building"></i>
+                <span>School</span>
+            </a>
+        </nav>
+    </div>
+    <div class="card animate-fade-in">
+        <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: 24px;">Profile Settings</h3>
+        <form id="profileForm">
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 32px;">
+                <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: var(--color-accent); color: white; display: flex; align-items: center; justify-content: center; font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold);" id="profileAvatar">A</div>
+                <div>
+                    <button type="button" class="btn btn-outline btn-sm">Change Photo</button>
+                    <p style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-top: 6px;">JPG, PNG. Max 2MB</p>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" id="settingsFirstName" value="">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" id="settingsLastName" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="settingsEmail" value="" disabled style="background: var(--color-bg-secondary);">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="settingsPhone" value="">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Role</label>
+                <input type="text" id="settingsRole" value="" disabled style="background: var(--color-bg-secondary);">
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-outline">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (!auth.requireAuth()) return;
+
+    const user = auth.getUser();
+    if (user) {
+        document.getElementById('settingsFirstName').value = user.first_name || '';
+        document.getElementById('settingsLastName').value = user.last_name || '';
+        document.getElementById('settingsEmail').value = user.email || '';
+        document.getElementById('settingsPhone').value = user.phone || '';
+        document.getElementById('settingsRole').value = user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : '';
+        document.getElementById('profileAvatar').textContent = user.first_name ? user.first_name.charAt(0) : 'U';
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+            first_name: document.getElementById('settingsFirstName').value,
+            last_name: document.getElementById('settingsLastName').value,
+            phone: document.getElementById('settingsPhone').value
+        };
+        try {
+            await api.put('/settings/profile', data);
+            localStorage.setItem('user', JSON.stringify({ ...user, ...data }));
+        } catch (err) {
+            console.error(err);
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Parent Portal{% endblock %}
+{% block page_title %}Parent Portal{% endblock %}
+{% block page_subtitle %}Monitor your child's academic journey{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="stat-card success animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="lucide-calendar-check"></i></div>
+        </div>
+        <div class="stat-card-value">96%</div>
+        <div class="stat-card-label">Attendance Rate</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="lucide-trophy"></i></div>
+        </div>
+        <div class="stat-card-value">B+</div>
+        <div class="stat-card-label">Current Average</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="lucide-wallet"></i></div>
+        </div>
+        <div class="stat-card-value">KES 15K</div>
+        <div class="stat-card-label">Fee Balance</div>
+    </div>
+    <div class="stat-card accent animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="lucide-book-open"></i></div>
+        </div>
+        <div class="stat-card-value">3</div>
+        <div class="stat-card-label">Pending Assignments</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="data-card animate-fade-in" style="animation-delay: 0.4s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Academic Performance</h3>
+        </div>
+        <div class="data-card-body">
+            <table class="data-table" style="margin: -24px;">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Score</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Mathematics</td><td>82</td><td><span class="badge badge-success">A-</span></td></tr>
+                    <tr><td>English</td><td>76</td><td><span class="badge badge-success">B+</span></td></tr>
+                    <tr><td>Biology</td><td>88</td><td><span class="badge badge-success">A</span></td></tr>
+                    <tr><td>Chemistry</td><td>71</td><td><span class="badge badge-info">B</span></td></tr>
+                    <tr><td>Physics</td><td>68</td><td><span class="badge badge-info">B</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="data-card animate-fade-in" style="animation-delay: 0.5s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Fee Payment History</h3>
+            <button class="btn btn-accent btn-sm">Pay Fees</button>
+        </div>
+        <div class="data-card-body">
+            <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                    <div class="activity-text">KES 45,000 paid via M-Pesa</div>
+                    <div class="activity-time">Jun 20, 2025</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                    <div class="activity-text">KES 30,000 paid via Bank Transfer</div>
+                    <div class="activity-time">May 15, 2025</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot yellow"></div>
+                <div>
+                    <div class="activity-text">KES 15,000 balance remaining</div>
+                    <div class="activity-time">Due: Jul 15, 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => { if (!auth.requireAuth()) return; });
+</script>
+{% endblock %}

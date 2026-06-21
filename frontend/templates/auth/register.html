@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassMate - Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.263.1/font/lucide.min.css">
+    <link rel="stylesheet" href="/static/css/design-system.css">
+    <link rel="stylesheet" href="/static/css/pages/auth.css">
+</head>
+<body>
+    <div class="auth-layout">
+        <div class="auth-left">
+            <div class="auth-form-container animate-fade-in">
+                <div class="auth-logo">
+                    <span class="logo-icon">C</span>
+                    <span class="logo-text">ClassMate</span>
+                </div>
+                <h1 class="auth-title">Create Account</h1>
+                <p class="auth-subtitle">Join ClassMate to manage your school experience</p>
+
+                <div class="auth-alert" id="authAlert"></div>
+
+                <form class="auth-form" id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="you@school.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+254 700 000 000">
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Account Type</label>
+                        <select id="role" required>
+                            <option value="">Select your role</option>
+                            <option value="admin">Administrator</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                            <option value="parent">Parent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-toggle">
+                            <input type="password" id="password" placeholder="Create a strong password" required>
+                            <button type="button" id="togglePassword">
+                                <i class="lucide-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="/login">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="auth-right">
+            <div class="auth-right-content">
+                <h2>Join ClassMate Today</h2>
+                <p>Experience a new era of school management with powerful tools and beautiful interfaces.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/utils/api.js"></script>
+    <script src="/static/js/pages/register.js"></script>
+</body>
+</html>

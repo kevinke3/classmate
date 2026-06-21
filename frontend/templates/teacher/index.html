@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Teacher Portal{% endblock %}
+{% block page_title %}Teacher Portal{% endblock %}
+{% block page_subtitle %}Manage your classes and students{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="stat-card info animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="lucide-book-open"></i></div>
+        </div>
+        <div class="stat-card-value">5</div>
+        <div class="stat-card-label">My Classes</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="lucide-users"></i></div>
+        </div>
+        <div class="stat-card-value">187</div>
+        <div class="stat-card-label">Total Students</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="lucide-clipboard-list"></i></div>
+        </div>
+        <div class="stat-card-value">4</div>
+        <div class="stat-card-label">Active Assignments</div>
+    </div>
+    <div class="stat-card accent animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="lucide-file-check"></i></div>
+        </div>
+        <div class="stat-card-value">12</div>
+        <div class="stat-card-label">Papers to Grade</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="data-card animate-fade-in" style="animation-delay: 0.4s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">My Classes</h3>
+            <button class="btn btn-ghost btn-sm">View All</button>
+        </div>
+        <div class="data-card-body">
+            <div class="student-cards" style="grid-template-columns: 1fr;">
+                <div class="student-card" style="margin-bottom: 8px;">
+                    <div class="student-card-header">
+                        <div class="student-card-avatar" style="background: rgba(230, 57, 70, 0.08); color: var(--color-accent);">3E</div>
+                        <div>
+                            <div class="student-card-name">Form 3 East - Biology</div>
+                            <div class="student-card-id">38 Students</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="student-card" style="margin-bottom: 8px;">
+                    <div class="student-card-header">
+                        <div class="student-card-avatar" style="background: rgba(59, 130, 246, 0.08); color: var(--color-info);">3W</div>
+                        <div>
+                            <div class="student-card-name">Form 3 West - Biology</div>
+                            <div class="student-card-id">35 Students</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="student-card" style="margin-bottom: 8px;">
+                    <div class="student-card-header">
+                        <div class="student-card-avatar" style="background: rgba(16, 185, 129, 0.08); color: var(--color-success);">4E</div>
+                        <div>
+                            <div class="student-card-name">Form 4 East - Biology</div>
+                            <div class="student-card-id">40 Students</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="data-card animate-fade-in" style="animation-delay: 0.5s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Quick Actions</h3>
+        </div>
+        <div class="quick-actions">
+            <button class="quick-action-btn" onclick="window.location.href='/attendance'">
+                <i class="lucide-calendar-check"></i>
+                <span>Mark Attendance</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="lucide-clipboard-list"></i>
+                <span>Create Assignment</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="lucide-file-check"></i>
+                <span>Enter Grades</span>
+            </button>
+            <button class="quick-action-btn" onclick="window.location.href='/messages'">
+                <i class="lucide-message-square"></i>
+                <span>Message Parents</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="lucide-bar-chart-3"></i>
+                <span>View Reports</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="lucide-calendar"></i>
+                <span>Exam Schedule</span>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => { if (!auth.requireAuth()) return; });
+</script>
+{% endblock %}

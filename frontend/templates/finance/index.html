@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Finance{% endblock %}
+{% block nav_finance %}active{% endblock %}
+{% block page_title %}Finance{% endblock %}
+{% block page_subtitle %}Fee management, payments and reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="stat-card accent animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="lucide-wallet"></i></div>
+        </div>
+        <div class="stat-card-value">KES 2.4M</div>
+        <div class="stat-card-label">Total Collected</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="lucide-clock"></i></div>
+        </div>
+        <div class="stat-card-value">KES 860K</div>
+        <div class="stat-card-label">Outstanding Balance</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="lucide-check-circle"></i></div>
+        </div>
+        <div class="stat-card-value">342</div>
+        <div class="stat-card-label">Payments This Month</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="lucide-smartphone"></i></div>
+        </div>
+        <div class="stat-card-value">78%</div>
+        <div class="stat-card-label">M-Pesa Payments</div>
+    </div>
+</div>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Recent Transactions</h3>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <button class="btn btn-outline" id="exportBtn">
+            <i class="lucide-download"></i>
+            Export
+        </button>
+        <button class="btn btn-primary" id="recordPaymentBtn">
+            <i class="lucide-plus"></i>
+            Record Payment
+        </button>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Reference</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">GW</div><div class="user-cell-info"><span class="user-cell-name">Grace Wanjiku</span><span class="user-cell-email">ADM/2024/001</span></div></div></td>
+                <td><strong>KES 45,000</strong></td>
+                <td><span class="badge badge-success">M-Pesa</span></td>
+                <td>QKJ3HDBS7R</td>
+                <td>Jun 20, 2025</td>
+                <td><span class="badge badge-success">Completed</span></td>
+            </tr>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">JO</div><div class="user-cell-info"><span class="user-cell-name">James Ochieng</span><span class="user-cell-email">ADM/2024/002</span></div></div></td>
+                <td><strong>KES 30,000</strong></td>
+                <td><span class="badge badge-info">Bank Transfer</span></td>
+                <td>BNK-20250619</td>
+                <td>Jun 19, 2025</td>
+                <td><span class="badge badge-success">Completed</span></td>
+            </tr>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">FK</div><div class="user-cell-info"><span class="user-cell-name">Faith Kamau</span><span class="user-cell-email">ADM/2024/003</span></div></div></td>
+                <td><strong>KES 25,000</strong></td>
+                <td><span class="badge badge-success">M-Pesa</span></td>
+                <td>RHK9JNMS2T</td>
+                <td>Jun 18, 2025</td>
+                <td><span class="badge badge-success">Completed</span></td>
+            </tr>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">DM</div><div class="user-cell-info"><span class="user-cell-name">David Mwangi</span><span class="user-cell-email">ADM/2024/004</span></div></div></td>
+                <td><strong>KES 15,000</strong></td>
+                <td><span class="badge badge-warning">Cash</span></td>
+                <td>CSH-20250617</td>
+                <td>Jun 17, 2025</td>
+                <td><span class="badge badge-warning">Partial</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="table-pagination">
+        <div class="pagination-info">Showing 1-4 of 342 transactions</div>
+        <div class="pagination-buttons">
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn"><i class="lucide-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => { if (!auth.requireAuth()) return; });
+</script>
+{% endblock %}
