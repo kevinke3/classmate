@@ -72,7 +72,6 @@ class AuthManager {
         const roleNames = {
             admin: 'Administrator',
             teacher: 'Teacher',
-            student: 'Student',
             parent: 'Parent',
             finance: 'Finance Officer'
         };

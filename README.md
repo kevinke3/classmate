@@ -4,7 +4,7 @@ A modern school management platform built as a premium SaaS product. Designed wi
 
 ## Features
 
-- **Role-Based Access Control** - 5 roles: Admin, Teacher, Student, Parent, and Finance Officer -- each with a dedicated portal and permissions
+- **Role-Based Access Control** - 4 roles: Admin, Teacher, Parent, and Finance Officer -- each with a dedicated portal and permissions
 - **Student Management** - Admissions, records, academic tracking
 - **Teacher Management** - Faculty profiles, class assignments, workload
 - **Academics** - Classes, subjects, timetables, assignments
@@ -86,9 +86,10 @@ The application will be available at `http://localhost:5000`
 |---------|--------------------------------|------------|---------------------|
 | Admin   | admin@classmate.io             | admin123   | /dashboard          |
 | Teacher | mary@classmate.io              | teacher123 | /teacher-portal     |
-| Student | grace@student.classmate.io     | student123 | /student-portal     |
 | Parent  | parent@classmate.io            | parent123  | /parent-portal      |
 | Finance | finance@classmate.io           | finance123 | /finance-portal     |
+
+Note: Students do not have login accounts. Their academic data (grades, timetable, attendance, assignments) is accessed by parents through the Parent Portal.
 
 ## Roles & Permissions
 
@@ -112,14 +113,10 @@ The application will be available at `http://localhost:5000`
 - Grade examinations and view student performance
 - Communicate with parents and students
 
-### Student
-- View grades, assignments, timetables, and attendance
-- Access announcements and exam schedules
-- View fee balance and payment history
-
 ### Parent
-- Monitor child's attendance and academic performance
-- View fee balances and payment receipts
+- Monitor child's attendance, academic performance, and class rank
+- View timetable, upcoming assignments, and school announcements
+- View fee balances and payment history
 - Communicate with teachers
 
 ## Project Structure
@@ -169,7 +166,6 @@ classmate/
 │       ├── settings/            # User + school settings
 │       ├── admin/               # Admin portal
 │       ├── parent/              # Parent portal
-│       ├── student/             # Student portal
 │       └── teacher/             # Teacher portal
 ├── requirements.txt
 ├── run.py

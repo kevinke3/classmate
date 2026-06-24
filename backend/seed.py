@@ -95,30 +95,23 @@ def seed():
             db.session.add(subject)
             subjects.append(subject)
 
-        # Student users
+        # Students (records only, no login accounts -- parents access via Parent Portal)
         students_data = [
-            ('Grace', 'Wanjiku', 'grace@student.classmate.io', 'ADM/2024/001', 'F'),
-            ('James', 'Ochieng', 'james@student.classmate.io', 'ADM/2024/002', 'M'),
-            ('Faith', 'Kamau', 'faith@student.classmate.io', 'ADM/2024/003', 'F'),
-            ('David', 'Mwangi', 'david@student.classmate.io', 'ADM/2024/004', 'M'),
-            ('Lucy', 'Akinyi', 'lucy@student.classmate.io', 'ADM/2024/005', 'F'),
-            ('Brian', 'Kiprop', 'brian@student.classmate.io', 'ADM/2024/006', 'M'),
-            ('Anne', 'Wambui', 'anne@student.classmate.io', 'ADM/2024/007', 'F'),
-            ('Kevin', 'Mutua', 'kevin@student.classmate.io', 'ADM/2024/008', 'M'),
+            ('Grace', 'Wanjiku', 'ADM/2024/001', 'F'),
+            ('James', 'Ochieng', 'ADM/2024/002', 'M'),
+            ('Faith', 'Kamau', 'ADM/2024/003', 'F'),
+            ('David', 'Mwangi', 'ADM/2024/004', 'M'),
+            ('Lucy', 'Akinyi', 'ADM/2024/005', 'F'),
+            ('Brian', 'Kiprop', 'ADM/2024/006', 'M'),
+            ('Anne', 'Wambui', 'ADM/2024/007', 'F'),
+            ('Kevin', 'Mutua', 'ADM/2024/008', 'M'),
         ]
 
         students = []
-        for i, (first, last, email, adm_no, gender) in enumerate(students_data):
-            user = User(
-                email=email, first_name=first, last_name=last,
-                role='student', is_verified=True
-            )
-            user.set_password('student123')
-            db.session.add(user)
-            db.session.flush()
-
+        for i, (first, last, adm_no, gender) in enumerate(students_data):
             student = Student(
-                user_id=user.id,
+                first_name=first,
+                last_name=last,
                 admission_number=adm_no,
                 class_id=classes[i % 4].id,
                 gender=gender,
@@ -264,7 +257,6 @@ def seed():
         print('  Admin: admin@classmate.io / admin123')
         print('  Finance: finance@classmate.io / finance123')
         print('  Teacher: mary@classmate.io / teacher123')
-        print('  Student: grace@student.classmate.io / student123')
         print('  Parent: parent@classmate.io / parent123')
 
 

@@ -56,5 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 financeLink.style.display = '';
             }
         }
+        if (user.role === 'parent') {
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                const allowed = ['/parent-portal', '/settings'];
+                if (!allowed.includes(href)) {
+                    item.style.display = 'none';
+                }
+            });
+        }
     }
 });

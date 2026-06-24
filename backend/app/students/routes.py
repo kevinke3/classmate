@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 from backend.app import db
-from backend.app.models import Student, User, SchoolClass
+from backend.app.models import Student, SchoolClass
 
 students_bp = Blueprint('students', __name__)
 
@@ -16,7 +16,7 @@ def get_students():
     search = request.args.get('search')
     status = request.args.get('status', 'active')
 
-    query = Student.query.join(User)
+    query = Student.query
 
     if class_id:
         query = query.filter(Student.class_id == class_id)
@@ -25,8 +25,8 @@ def get_students():
     if search:
         query = query.filter(
             db.or_(
-                User.first_name.ilike(f'%{search}%'),
-                User.last_name.ilike(f'%{search}%'),
+                Student.first_name.ilike(f'%{search}%'),
+                Student.last_name.ilike(f'%{search}%'),
                 Student.admission_number.ilike(f'%{search}%')
             )
         )
@@ -59,20 +59,9 @@ def create_student():
 
     data = request.get_json()
 
-    user = User(
-        email=data['email'],
+    student = Student(
         first_name=data['first_name'],
         last_name=data['last_name'],
-        role='student',
-        phone=data.get('phone')
-    )
-    user.set_password(data.get('password', 'changeme123'))
-
-    db.session.add(user)
-    db.session.flush()
-
-    student = Student(
-        user_id=user.id,
         admission_number=data['admission_number'],
         class_id=data.get('class_id'),
         stream_id=data.get('stream_id'),
@@ -110,9 +99,9 @@ def update_student(student_id):
         student.guardian_phone = data['guardian_phone']
 
     if 'first_name' in data:
-        student.user.first_name = data['first_name']
+        student.first_name = data['first_name']
     if 'last_name' in data:
-        student.user.last_name = data['last_name']
+        student.last_name = data['last_name']
 
     db.session.commit()
 

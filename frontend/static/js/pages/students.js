@@ -137,10 +137,6 @@ function showAddStudentModal() {
                             <input type="text" id="studentLastName" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" id="studentEmail" required>
-                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Admission Number</label>
@@ -185,7 +181,6 @@ async function submitStudent() {
     const data = {
         first_name: document.getElementById('studentFirstName').value,
         last_name: document.getElementById('studentLastName').value,
-        email: document.getElementById('studentEmail').value,
         admission_number: document.getElementById('studentAdmNo').value,
         class_id: document.getElementById('studentClass').value || null,
         guardian_name: document.getElementById('guardianName').value,

@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const redirectMap = {
                         'admin': '/dashboard',
                         'teacher': '/teacher-portal',
-                        'student': '/student-portal',
                         'parent': '/parent-portal',
                         'finance': '/finance-portal'
                     };

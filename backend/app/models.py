@@ -58,7 +58,9 @@ class Student(db.Model):
     __tablename__ = 'students'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    first_name = db.Column(db.String(50), nullable=False, default='')
+    last_name = db.Column(db.String(50), nullable=False, default='')
     admission_number = db.Column(db.String(20), unique=True, nullable=False)
     class_id = db.Column(db.Integer, db.ForeignKey('classes.id'))
     stream_id = db.Column(db.Integer, db.ForeignKey('streams.id'))
@@ -77,14 +79,24 @@ class Student(db.Model):
     fee_records = db.relationship('FeeRecord', backref='student', lazy='dynamic')
     documents = db.relationship('Document', backref='student', lazy='dynamic')
 
+    @property
+    def full_name(self):
+        if self.first_name or self.last_name:
+            return f'{self.first_name} {self.last_name}'.strip()
+        if self.user:
+            return self.user.full_name
+        return self.admission_number
+
     def to_dict(self):
         return {
             'id': self.id,
             'user_id': self.user_id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
             'admission_number': self.admission_number,
             'class_id': self.class_id,
             'stream_id': self.stream_id,
-            'full_name': self.user.full_name if self.user else None,
+            'full_name': self.full_name,
             'email': self.user.email if self.user else None,
             'date_of_birth': self.date_of_birth.isoformat() if self.date_of_birth else None,
             'gender': self.gender,

@@ -68,11 +68,6 @@ def parent_portal():
     return render_template('parent/index.html')
 
 
-@main_bp.route('/student-portal')
-def student_portal():
-    return render_template('student/index.html')
-
-
 @main_bp.route('/teacher-portal')
 def teacher_portal():
     return render_template('teacher/index.html')
