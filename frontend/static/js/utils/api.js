@@ -33,7 +33,7 @@ class ApiClient {
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, config);
 
-            if (response.status === 401) {
+            if (response.status === 401 && !endpoint.startsWith('/auth/')) {
                 const refreshed = await this.refreshToken();
                 if (refreshed) {
                     config.headers = this.getHeaders();

@@ -67,6 +67,7 @@ def seed():
                 capacity=200
             )
             db.session.add(school_class)
+            db.session.flush()
             classes.append(school_class)
 
             for stream_name in ['East', 'West', 'North', 'South']:
