@@ -4,11 +4,13 @@ A modern school management platform built as a premium SaaS product. Designed wi
 
 ## Features
 
-- **Role-Based Access Control** - Separate dashboards for Admin, Teacher, Student, and Parent
+- **Role-Based Access Control** - 5 roles: Admin, Teacher, Student, Parent, and Finance Officer -- each with a dedicated portal and permissions
 - **Student Management** - Admissions, records, academic tracking
 - **Teacher Management** - Faculty profiles, class assignments, workload
 - **Academics** - Classes, subjects, timetables, assignments
-- **Finance** - Fee invoicing, M-Pesa integration, payment tracking, receipts
+- **Finance Officer Portal** - Dedicated high-security portal for recording payments, generating invoices, printing receipts, and tracking student balances
+- **School Settings** - Admin can configure school name, logo, motto, address, email, academic year, and term -- branding flows into all printed documents
+- **Printable Invoices & Receipts** - Professional school-branded documents with signature lines, ready for printing and distribution
 - **Attendance** - Daily tracking, reports, trend analysis
 - **Examinations** - Exam creation, grading, report cards, rankings
 - **Messaging** - Real-time communication via Flask-SocketIO
@@ -18,13 +20,12 @@ A modern school management platform built as a premium SaaS product. Designed wi
 
 ## Tech Stack
 
-- **Backend**: Flask, SQLAlchemy, Flask-JWT-Extended, Flask-SocketIO
+- **Backend**: Flask 3.0, SQLAlchemy 2.0, Flask-JWT-Extended, Flask-SocketIO
 - **Database**: PostgreSQL
-- **Frontend**: HTML5, CSS3, JavaScript (vanilla)
-- **Charts**: Chart.js
+- **Frontend**: HTML5, CSS3, JavaScript (vanilla, separate files)
+- **Charts**: Chart.js 4.4
 - **Icons**: Lucide Icons
 - **Font**: Outfit (Google Fonts)
-- **Payments**: M-Pesa STK Push (Safaricom)
 
 ## Design System
 
@@ -40,14 +41,14 @@ A modern school management platform built as a premium SaaS product. Designed wi
 ### Prerequisites
 
 - Python 3.10+
-- PostgreSQL
+- PostgreSQL 14+
 - pip
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone <repo-url>
+git clone https://github.com/kevinke3/classmate.git
 cd classmate
 
 # Create virtual environment
@@ -67,7 +68,7 @@ createdb classmate
 # Run the application (creates tables automatically)
 python run.py
 
-# Seed sample data (optional)
+# Seed sample data (optional but recommended)
 python -m backend.seed
 ```
 
@@ -81,12 +82,45 @@ The application will be available at `http://localhost:5000`
 
 ### Default Credentials (after seeding)
 
-| Role    | Email                          | Password   |
-|---------|--------------------------------|------------|
-| Admin   | admin@classmate.io             | admin123   |
-| Teacher | mary@classmate.io              | teacher123 |
-| Student | grace@student.classmate.io     | student123 |
-| Parent  | parent@classmate.io            | parent123  |
+| Role    | Email                          | Password   | Portal              |
+|---------|--------------------------------|------------|---------------------|
+| Admin   | admin@classmate.io             | admin123   | /dashboard          |
+| Teacher | mary@classmate.io              | teacher123 | /teacher-portal     |
+| Student | grace@student.classmate.io     | student123 | /student-portal     |
+| Parent  | parent@classmate.io            | parent123  | /parent-portal      |
+| Finance | finance@classmate.io           | finance123 | /finance-portal     |
+
+## Roles & Permissions
+
+### Admin (Headteacher/Principal)
+- Full access to all modules and portals
+- Configure school settings: name, logo, motto, email, address, academic year, term
+- Manage students, teachers, classes, and all operations
+- Access finance overview and analytics
+
+### Finance Officer
+- Dedicated `/finance-portal` with isolated sidebar (Finance + Settings only)
+- Record fee payments (auto-generates receipts)
+- Create and manage invoices
+- View and print school-branded invoices and receipts
+- Track student balances and outstanding fees
+- All finance write operations protected with role-based access control
+
+### Teacher
+- Manage assigned classes and subjects
+- Take attendance, create assignments
+- Grade examinations and view student performance
+- Communicate with parents and students
+
+### Student
+- View grades, assignments, timetables, and attendance
+- Access announcements and exam schedules
+- View fee balance and payment history
+
+### Parent
+- Monitor child's attendance and academic performance
+- View fee balances and payment receipts
+- Communicate with teachers
 
 ## Project Structure
 
@@ -95,23 +129,23 @@ classmate/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py          # App factory
-│   │   ├── models.py            # SQLAlchemy models
+│   │   ├── models.py            # SQLAlchemy models (20+ models)
 │   │   ├── main.py              # Page routes
-│   │   ├── auth/                # Authentication
+│   │   ├── auth/                # JWT authentication, registration, password reset
 │   │   ├── users/               # User management
 │   │   ├── students/            # Student CRUD
 │   │   ├── teachers/            # Teacher CRUD
 │   │   ├── academics/           # Classes, subjects, timetables
 │   │   ├── attendance/          # Attendance tracking
-│   │   ├── finance/             # Fees, payments, M-Pesa
+│   │   ├── finance/             # Payments, invoices, receipts (role-gated)
 │   │   ├── examinations/        # Exams and grading
-│   │   ├── messaging/           # Real-time messaging
-│   │   ├── notifications/       # Notifications system
+│   │   ├── messaging/           # Real-time messaging (SocketIO)
+│   │   ├── notifications/       # Notification system
 │   │   ├── analytics/           # Dashboard analytics
-│   │   ├── settings/            # User settings
+│   │   ├── settings/            # User + school settings
 │   │   └── documents/           # Document management
 │   ├── config.py                # Configuration
-│   └── seed.py                  # Sample data
+│   └── seed.py                  # Sample data (users, students, invoices, receipts)
 ├── frontend/
 │   ├── static/
 │   │   ├── css/
@@ -129,10 +163,10 @@ classmate/
 │       ├── students/            # Student management
 │       ├── teachers/            # Teacher management
 │       ├── academics/           # Academic management
-│       ├── finance/             # Finance management
+│       ├── finance/             # Finance portal (invoices, receipts, payments)
 │       ├── attendance/          # Attendance tracking
 │       ├── messages/            # Messaging
-│       ├── settings/            # User settings
+│       ├── settings/            # User + school settings
 │       ├── admin/               # Admin portal
 │       ├── parent/              # Parent portal
 │       ├── student/             # Student portal
@@ -147,15 +181,34 @@ classmate/
 
 All API routes are prefixed with `/api/`:
 
+### Authentication
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login (returns JWT)
 - `GET /api/auth/me` - Current user profile
+- `POST /api/auth/reset-password` - Password reset
+
+### Students & Teachers
 - `GET /api/students/` - List students
 - `POST /api/students/` - Create student
 - `GET /api/teachers/` - List teachers
-- `POST /api/attendance/mark` - Mark attendance
+
+### Finance (requires `admin` or `finance` role)
+- `GET /api/finance/stats` - Financial overview (totals, counts)
 - `GET /api/finance/payments` - List payments
-- `POST /api/finance/mpesa/stk-push` - Initiate M-Pesa payment
+- `POST /api/finance/payments` - Record payment (auto-creates receipt, applies to invoices)
+- `GET /api/finance/invoices` - List invoices (filterable by status)
+- `POST /api/finance/invoices` - Create invoice
+- `GET /api/finance/invoices/<id>` - Get invoice with school branding
+- `GET /api/finance/receipts` - List receipts
+- `GET /api/finance/receipts/<id>` - Get receipt with school branding
+- `GET /api/finance/student-balance/<id>` - Student balance summary
+
+### School Settings (admin only)
+- `GET /api/settings/school` - Get school configuration
+- `PUT /api/settings/school` - Update school name, logo, motto, address, etc.
+
+### Other
+- `POST /api/attendance/mark` - Mark attendance
 - `GET /api/examinations/` - List examinations
 - `POST /api/messaging/messages` - Send message
 - `GET /api/analytics/overview` - Dashboard analytics
