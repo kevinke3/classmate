@@ -579,6 +579,109 @@ class Document(db.Model):
         }
 
 
+class SchoolSettings(db.Model):
+    __tablename__ = 'school_settings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    school_name = db.Column(db.String(200), nullable=False, default='ClassMate Academy')
+    motto = db.Column(db.String(300), default='Excellence in Education')
+    email = db.Column(db.String(120), default='info@classmate.io')
+    phone = db.Column(db.String(20), default='+254 700 000 000')
+    address = db.Column(db.Text, default='Nairobi, Kenya')
+    logo_url = db.Column(db.String(500))
+    website = db.Column(db.String(200))
+    academic_year = db.Column(db.String(20), default='2025')
+    current_term = db.Column(db.String(20), default='Term 1')
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'school_name': self.school_name,
+            'motto': self.motto,
+            'email': self.email,
+            'phone': self.phone,
+            'address': self.address,
+            'logo_url': self.logo_url,
+            'website': self.website,
+            'academic_year': self.academic_year,
+            'current_term': self.current_term,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
+
+
+class Invoice(db.Model):
+    __tablename__ = 'invoices'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invoice_number = db.Column(db.String(50), unique=True, nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    fee_structure_id = db.Column(db.Integer, db.ForeignKey('fee_structures.id'))
+    amount = db.Column(db.Float, nullable=False)
+    balance = db.Column(db.Float, nullable=False)
+    description = db.Column(db.Text)
+    term = db.Column(db.String(20))
+    academic_year = db.Column(db.String(20))
+    due_date = db.Column(db.Date)
+    status = db.Column(db.String(20), default='unpaid')
+    created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    student = db.relationship('Student', backref='invoices')
+    creator = db.relationship('User', backref='created_invoices')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'invoice_number': self.invoice_number,
+            'student_id': self.student_id,
+            'student_name': self.student.user.full_name if self.student and self.student.user else None,
+            'admission_number': self.student.admission_number if self.student else None,
+            'amount': self.amount,
+            'balance': self.balance,
+            'description': self.description,
+            'term': self.term,
+            'academic_year': self.academic_year,
+            'due_date': self.due_date.isoformat() if self.due_date else None,
+            'status': self.status,
+            'created_by_name': self.creator.full_name if self.creator else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
+class Receipt(db.Model):
+    __tablename__ = 'receipts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    receipt_number = db.Column(db.String(50), unique=True, nullable=False)
+    payment_id = db.Column(db.Integer, db.ForeignKey('fee_records.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    payment_method = db.Column(db.String(50))
+    description = db.Column(db.Text)
+    generated_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    payment = db.relationship('FeeRecord', backref='receipt')
+    student = db.relationship('Student', backref='receipts')
+    generator = db.relationship('User', backref='generated_receipts')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'receipt_number': self.receipt_number,
+            'payment_id': self.payment_id,
+            'student_id': self.student_id,
+            'student_name': self.student.user.full_name if self.student and self.student.user else None,
+            'admission_number': self.student.admission_number if self.student else None,
+            'amount': self.amount,
+            'payment_method': self.payment_method,
+            'description': self.description,
+            'generated_by_name': self.generator.full_name if self.generator else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+
 class AuditLog(db.Model):
     __tablename__ = 'audit_logs'
 

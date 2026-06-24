@@ -31,11 +31,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const currentPath = window.location.pathname;
-    const navItems = document.querySelectorAll('.nav-item');
+    const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
     navItems.forEach(item => {
         const href = item.getAttribute('href');
         if (href === currentPath) {
             item.classList.add('active');
         }
     });
+
+    const userData = localStorage.getItem('user');
+    if (userData) {
+        const user = JSON.parse(userData);
+        if (user.role === 'finance') {
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                const allowed = ['/finance-portal', '/settings'];
+                if (!allowed.includes(href)) {
+                    item.style.display = 'none';
+                }
+            });
+            const financeLink = document.querySelector('.sidebar-nav .nav-item[href="/finance"]');
+            if (financeLink) {
+                financeLink.setAttribute('href', '/finance-portal');
+                financeLink.style.display = '';
+            }
+        }
+    }
 });

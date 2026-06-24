@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Finance Portal{% endblock %}
+{% block nav_finance %}active{% endblock %}
+{% block page_title %}Finance Portal{% endblock %}
+{% block page_subtitle %}Manage fees, payments, invoices and receipts{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/finance-portal.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid" id="financeStats">
+    <div class="stat-card accent animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="lucide-wallet"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalCollected">KES 0</div>
+        <div class="stat-card-label">Total Collected</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="lucide-clock"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalOutstanding">KES 0</div>
+        <div class="stat-card-label">Outstanding Balance</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="lucide-check-circle"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalPayments">0</div>
+        <div class="stat-card-label">Total Payments</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="lucide-file-text"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalInvoices">0</div>
+        <div class="stat-card-label">Invoices Issued</div>
+    </div>
+</div>
+
+<div class="finance-tabs">
+    <button class="finance-tab active" data-tab="payments">
+        <i class="lucide-credit-card"></i> Payments
+    </button>
+    <button class="finance-tab" data-tab="invoices">
+        <i class="lucide-file-text"></i> Invoices
+    </button>
+    <button class="finance-tab" data-tab="receipts">
+        <i class="lucide-receipt"></i> Receipts
+    </button>
+    <button class="finance-tab" data-tab="balances">
+        <i class="lucide-bar-chart-3"></i> Student Balances
+    </button>
+</div>
+
+<div class="finance-panel active" id="panel-payments">
+    <div class="panel-header">
+        <div class="panel-actions">
+            <input type="text" id="paymentSearch" placeholder="Search payments..." class="panel-search">
+            <button class="btn btn-primary" id="recordPaymentBtn">
+                <i class="lucide-plus"></i> Record Payment
+            </button>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Reference</th>
+                    <th>Date</th>
+                    <th>Receipt</th>
+                </tr>
+            </thead>
+            <tbody id="paymentsTableBody">
+                <tr><td colspan="6" class="empty-state">Loading payments...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="finance-panel" id="panel-invoices">
+    <div class="panel-header">
+        <div class="panel-actions">
+            <select id="invoiceFilter" class="panel-filter">
+                <option value="">All Invoices</option>
+                <option value="unpaid">Unpaid</option>
+                <option value="partial">Partial</option>
+                <option value="paid">Paid</option>
+            </select>
+            <button class="btn btn-primary" id="createInvoiceBtn">
+                <i class="lucide-plus"></i> Create Invoice
+            </button>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Invoice #</th>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Balance</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="invoicesTableBody">
+                <tr><td colspan="7" class="empty-state">Loading invoices...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="finance-panel" id="panel-receipts">
+    <div class="panel-header">
+        <div class="panel-actions">
+            <input type="text" id="receiptSearch" placeholder="Search receipts..." class="panel-search">
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Receipt #</th>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="receiptsTableBody">
+                <tr><td colspan="6" class="empty-state">Loading receipts...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="finance-panel" id="panel-balances">
+    <div class="panel-header">
+        <div class="panel-actions">
+            <input type="text" id="balanceSearch" placeholder="Search student..." class="panel-search">
+        </div>
+    </div>
+    <div id="balanceCards" class="balance-cards-grid">
+        <div class="empty-state">Select a student to view their balance</div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="printOverlay">
+    <div class="modal print-modal" id="printModal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="printTitle">Document</h3>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-primary btn-sm" id="printBtn">
+                    <i class="lucide-printer"></i> Print
+                </button>
+                <button class="btn btn-outline btn-sm" id="closePrintBtn">
+                    <i class="lucide-x"></i>
+                </button>
+            </div>
+        </div>
+        <div class="modal-body" id="printContent"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pages/finance-portal.js') }}"></script>
+{% endblock %}

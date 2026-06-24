@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         'admin': '/dashboard',
                         'teacher': '/teacher-portal',
                         'student': '/student-portal',
-                        'parent': '/parent-portal'
+                        'parent': '/parent-portal',
+                        'finance': '/finance-portal'
                     };
 
                     window.location.href = redirectMap[role] || '/dashboard';

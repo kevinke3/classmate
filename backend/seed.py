@@ -4,7 +4,8 @@ from backend.app import create_app, db
 from backend.app.models import (
     User, Student, Teacher, Parent, SchoolClass, Stream,
     Subject, Attendance, FeeStructure, FeeRecord, Examination,
-    Grade, Announcement, Event, Notification
+    Grade, Announcement, Event, Notification, SchoolSettings,
+    Invoice, Receipt
 )
 
 
@@ -128,6 +129,19 @@ def seed():
             db.session.add(student)
             students.append(student)
 
+        # Finance officer user
+        finance_user = User(
+            email='finance@classmate.io',
+            first_name='Susan',
+            last_name='Muthoni',
+            role='finance',
+            phone='+254700000020',
+            is_verified=True
+        )
+        finance_user.set_password('finance123')
+        db.session.add(finance_user)
+        db.session.flush()
+
         # Parent user
         parent_user = User(
             email='parent@classmate.io',
@@ -200,10 +214,55 @@ def seed():
             )
             db.session.add(event)
 
+        # School settings
+        school = SchoolSettings(
+            school_name='ClassMate Academy',
+            motto='Excellence in Education',
+            email='info@classmate.io',
+            phone='+254 700 000 000',
+            address='P.O. Box 12345, Nairobi, Kenya',
+            academic_year='2025',
+            current_term='Term 1'
+        )
+        db.session.add(school)
+
+        # Invoices for students
+        for i, student in enumerate(students):
+            inv = Invoice(
+                invoice_number=f'INV-2025-{i+1:04d}',
+                student_id=student.id,
+                amount=45000,
+                balance=45000 if i >= 4 else 0,
+                description='Tuition Fee - Term 1',
+                term='Term 1',
+                academic_year='2025',
+                due_date=date(2025, 3, 15),
+                status='paid' if i < 4 else 'unpaid',
+                created_by=finance_user.id
+            )
+            db.session.add(inv)
+
+        db.session.flush()
+
+        # Receipts for completed payments
+        payments = FeeRecord.query.filter_by(status='completed').all()
+        for pay in payments:
+            receipt = Receipt(
+                receipt_number=f'RCP-2025-{pay.id:04d}',
+                payment_id=pay.id,
+                student_id=pay.student_id,
+                amount=pay.amount_paid,
+                payment_method=pay.payment_method,
+                description='Tuition Fee Payment',
+                generated_by=finance_user.id
+            )
+            db.session.add(receipt)
+
         db.session.commit()
         print('Database seeded successfully!')
         print('Login credentials:')
         print('  Admin: admin@classmate.io / admin123')
+        print('  Finance: finance@classmate.io / finance123')
         print('  Teacher: mary@classmate.io / teacher123')
         print('  Student: grace@student.classmate.io / student123')
         print('  Parent: parent@classmate.io / parent123')

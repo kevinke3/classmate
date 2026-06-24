@@ -27,7 +27,7 @@ def register():
     if User.query.filter_by(email=data['email']).first():
         return jsonify({'error': 'Email already registered'}), 409
 
-    valid_roles = ['admin', 'teacher', 'student', 'parent']
+    valid_roles = ['admin', 'teacher', 'student', 'parent', 'finance']
     if data['role'] not in valid_roles:
         return jsonify({'error': 'Invalid role'}), 400
 

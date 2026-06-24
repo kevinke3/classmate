@@ -76,3 +76,8 @@ def student_portal():
 @main_bp.route('/teacher-portal')
 def teacher_portal():
     return render_template('teacher/index.html')
+
+
+@main_bp.route('/finance-portal')
+def finance_portal():
+    return render_template('finance/portal.html')

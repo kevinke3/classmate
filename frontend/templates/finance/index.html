@@ -16,29 +16,29 @@
         <div class="stat-card-header">
             <div class="stat-card-icon accent"><i class="lucide-wallet"></i></div>
         </div>
-        <div class="stat-card-value">KES 2.4M</div>
+        <div class="stat-card-value" id="totalCollected">KES 0</div>
         <div class="stat-card-label">Total Collected</div>
     </div>
     <div class="stat-card warning animate-fade-in" style="animation-delay: 0.1s">
         <div class="stat-card-header">
             <div class="stat-card-icon warning"><i class="lucide-clock"></i></div>
         </div>
-        <div class="stat-card-value">KES 860K</div>
+        <div class="stat-card-value" id="totalOutstanding">KES 0</div>
         <div class="stat-card-label">Outstanding Balance</div>
     </div>
     <div class="stat-card success animate-fade-in" style="animation-delay: 0.2s">
         <div class="stat-card-header">
             <div class="stat-card-icon success"><i class="lucide-check-circle"></i></div>
         </div>
-        <div class="stat-card-value">342</div>
-        <div class="stat-card-label">Payments This Month</div>
+        <div class="stat-card-value" id="totalPayments">0</div>
+        <div class="stat-card-label">Payments Recorded</div>
     </div>
     <div class="stat-card info animate-fade-in" style="animation-delay: 0.3s">
         <div class="stat-card-header">
-            <div class="stat-card-icon info"><i class="lucide-smartphone"></i></div>
+            <div class="stat-card-icon info"><i class="lucide-file-text"></i></div>
         </div>
-        <div class="stat-card-value">78%</div>
-        <div class="stat-card-label">M-Pesa Payments</div>
+        <div class="stat-card-value" id="totalInvoices">0</div>
+        <div class="stat-card-label">Invoices Issued</div>
     </div>
 </div>
 
@@ -50,10 +50,6 @@
         <button class="btn btn-outline" id="exportBtn">
             <i class="lucide-download"></i>
             Export
-        </button>
-        <button class="btn btn-primary" id="recordPaymentBtn">
-            <i class="lucide-plus"></i>
-            Record Payment
         </button>
     </div>
 </div>
@@ -70,55 +66,48 @@
                 <th>Status</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td><div class="user-cell"><div class="user-cell-avatar">GW</div><div class="user-cell-info"><span class="user-cell-name">Grace Wanjiku</span><span class="user-cell-email">ADM/2024/001</span></div></div></td>
-                <td><strong>KES 45,000</strong></td>
-                <td><span class="badge badge-success">M-Pesa</span></td>
-                <td>QKJ3HDBS7R</td>
-                <td>Jun 20, 2025</td>
-                <td><span class="badge badge-success">Completed</span></td>
-            </tr>
-            <tr>
-                <td><div class="user-cell"><div class="user-cell-avatar">JO</div><div class="user-cell-info"><span class="user-cell-name">James Ochieng</span><span class="user-cell-email">ADM/2024/002</span></div></div></td>
-                <td><strong>KES 30,000</strong></td>
-                <td><span class="badge badge-info">Bank Transfer</span></td>
-                <td>BNK-20250619</td>
-                <td>Jun 19, 2025</td>
-                <td><span class="badge badge-success">Completed</span></td>
-            </tr>
-            <tr>
-                <td><div class="user-cell"><div class="user-cell-avatar">FK</div><div class="user-cell-info"><span class="user-cell-name">Faith Kamau</span><span class="user-cell-email">ADM/2024/003</span></div></div></td>
-                <td><strong>KES 25,000</strong></td>
-                <td><span class="badge badge-success">M-Pesa</span></td>
-                <td>RHK9JNMS2T</td>
-                <td>Jun 18, 2025</td>
-                <td><span class="badge badge-success">Completed</span></td>
-            </tr>
-            <tr>
-                <td><div class="user-cell"><div class="user-cell-avatar">DM</div><div class="user-cell-info"><span class="user-cell-name">David Mwangi</span><span class="user-cell-email">ADM/2024/004</span></div></div></td>
-                <td><strong>KES 15,000</strong></td>
-                <td><span class="badge badge-warning">Cash</span></td>
-                <td>CSH-20250617</td>
-                <td>Jun 17, 2025</td>
-                <td><span class="badge badge-warning">Partial</span></td>
-            </tr>
+        <tbody id="transactionsBody">
+            <tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--color-text-tertiary);">Loading transactions...</td></tr>
         </tbody>
     </table>
-    <div class="table-pagination">
-        <div class="pagination-info">Showing 1-4 of 342 transactions</div>
-        <div class="pagination-buttons">
-            <button class="pagination-btn active">1</button>
-            <button class="pagination-btn">2</button>
-            <button class="pagination-btn">3</button>
-            <button class="pagination-btn"><i class="lucide-chevron-right"></i></button>
-        </div>
-    </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-document.addEventListener('DOMContentLoaded', () => { if (!auth.requireAuth()) return; });
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!auth.requireAuth()) return;
+
+    try {
+        const stats = await api.get('/finance/stats');
+        document.getElementById('totalCollected').textContent = 'KES ' + Number(stats.total_collected).toLocaleString();
+        document.getElementById('totalOutstanding').textContent = 'KES ' + Number(stats.total_outstanding || 0).toLocaleString();
+        document.getElementById('totalPayments').textContent = stats.total_payments;
+        document.getElementById('totalInvoices').textContent = stats.total_invoices || 0;
+    } catch (e) {
+        console.error('Failed to load finance stats:', e);
+    }
+
+    try {
+        const data = await api.get('/finance/payments?per_page=10');
+        const tbody = document.getElementById('transactionsBody');
+        if (data.payments && data.payments.length > 0) {
+            tbody.innerHTML = data.payments.map(p => `
+                <tr>
+                    <td><div class="user-cell"><div class="user-cell-avatar">${(p.student_name || 'NA').split(' ').map(w=>w[0]).join('')}</div><div class="user-cell-info"><span class="user-cell-name">${p.student_name || 'Unknown'}</span><span class="user-cell-email">${p.admission_number || ''}</span></div></div></td>
+                    <td><strong>KES ${Number(p.amount_paid).toLocaleString()}</strong></td>
+                    <td><span class="badge badge-success">${p.payment_method || 'N/A'}</span></td>
+                    <td>${p.transaction_id || 'N/A'}</td>
+                    <td>${p.payment_date ? new Date(p.payment_date).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : 'N/A'}</td>
+                    <td><span class="badge badge-success">${p.status}</span></td>
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--color-text-tertiary);">No transactions yet</td></tr>';
+        }
+    } catch (e) {
+        console.error('Failed to load transactions:', e);
+    }
+});
 </script>
 {% endblock %}

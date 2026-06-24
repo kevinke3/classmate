@@ -1,0 +1,302 @@
+.finance-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 4px;
+    margin-bottom: 24px;
+}
+
+.finance-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.finance-tab:hover {
+    color: var(--color-text);
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.finance-tab.active {
+    background: white;
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+}
+
+.finance-tab i {
+    font-size: 16px;
+}
+
+.finance-panel {
+    display: none;
+}
+
+.finance-panel.active {
+    display: block;
+}
+
+.panel-header {
+    margin-bottom: 16px;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.panel-search {
+    flex: 1;
+    max-width: 300px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    background: white;
+    transition: border-color 0.2s;
+}
+
+.panel-search:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.panel-filter {
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    background: white;
+    cursor: pointer;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-sm);
+}
+
+.balance-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.balance-card {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    transition: box-shadow 0.2s;
+}
+
+.balance-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.balance-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.balance-card-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+}
+
+.balance-card-name {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+}
+
+.balance-card-id {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.balance-card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.balance-stat {
+    text-align: center;
+    padding: 10px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.balance-stat-value {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-base);
+}
+
+.balance-stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+}
+
+.balance-stat.outstanding .balance-stat-value {
+    color: var(--color-error);
+}
+
+.balance-stat.paid .balance-stat-value {
+    color: var(--color-success);
+}
+
+.print-modal {
+    max-width: 800px;
+    width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.print-document {
+    background: white;
+    padding: 40px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.print-header {
+    text-align: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.print-school-name {
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.print-school-motto {
+    font-size: 12px;
+    font-style: italic;
+    color: #555;
+    margin-top: 2px;
+}
+
+.print-school-contact {
+    font-size: 11px;
+    color: #666;
+    margin-top: 6px;
+}
+
+.print-doc-title {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    margin: 16px 0;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+.print-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.print-info-row {
+    display: flex;
+    gap: 8px;
+}
+
+.print-info-label {
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+}
+
+.print-table th,
+.print-table td {
+    border: 1px solid #333;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.print-table th {
+    background: #f0f0f0;
+    font-weight: 600;
+}
+
+.print-total {
+    text-align: right;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 16px 0;
+}
+
+.print-footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.print-signature {
+    text-align: center;
+}
+
+.print-signature-line {
+    border-top: 1px solid #333;
+    width: 180px;
+    margin: 40px auto 4px;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printContent, #printContent * {
+        visibility: visible;
+    }
+    #printContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    .no-print {
+        display: none;
+    }
+}

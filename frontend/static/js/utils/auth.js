@@ -69,7 +69,14 @@ class AuthManager {
     }
 
     capitalizeRole(role) {
-        return role.charAt(0).toUpperCase() + role.slice(1);
+        const roleNames = {
+            admin: 'Administrator',
+            teacher: 'Teacher',
+            student: 'Student',
+            parent: 'Parent',
+            finance: 'Finance Officer'
+        };
+        return roleNames[role] || role.charAt(0).toUpperCase() + role.slice(1);
     }
 
     requireAuth() {
