@@ -109,18 +109,63 @@ class Student(db.Model):
 class Teacher(db.Model):
     __tablename__ = 'teachers'
 
+    ROLE_CLASS_TEACHER = 'class_teacher'
+    ROLE_HEAD_OF_STUDIES = 'head_of_studies'
+    ROLE_SENIOR_TEACHER = 'senior_teacher'
+    ROLE_DEPUTY = 'deputy'
+
+    VALID_ROLES = [
+        ROLE_CLASS_TEACHER, ROLE_HEAD_OF_STUDIES,
+        ROLE_SENIOR_TEACHER, ROLE_DEPUTY
+    ]
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     employee_id = db.Column(db.String(20), unique=True, nullable=False)
     department = db.Column(db.String(50))
     specialization = db.Column(db.String(100))
     qualification = db.Column(db.String(100))
+    teacher_role = db.Column(db.String(30), default=ROLE_CLASS_TEACHER)
     date_of_joining = db.Column(db.Date, default=datetime.utcnow)
     status = db.Column(db.String(20), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     subjects = db.relationship('SubjectTeacher', backref='teacher', lazy='dynamic')
     classes = db.relationship('ClassTeacher', backref='teacher', lazy='dynamic')
+
+    @property
+    def can_message_parents(self):
+        return self.teacher_role in (
+            self.ROLE_CLASS_TEACHER, self.ROLE_DEPUTY
+        )
+
+    @property
+    def can_manage_academics(self):
+        return self.teacher_role in (
+            self.ROLE_HEAD_OF_STUDIES, self.ROLE_DEPUTY
+        )
+
+    @property
+    def can_manage_announcements(self):
+        return self.teacher_role in (
+            self.ROLE_SENIOR_TEACHER, self.ROLE_DEPUTY
+        )
+
+    @property
+    def can_manage_events(self):
+        return self.teacher_role in (
+            self.ROLE_SENIOR_TEACHER, self.ROLE_DEPUTY
+        )
+
+    @property
+    def teacher_role_display(self):
+        labels = {
+            'class_teacher': 'Class Teacher',
+            'head_of_studies': 'Head of Studies',
+            'senior_teacher': 'Senior Teacher',
+            'deputy': 'Deputy',
+        }
+        return labels.get(self.teacher_role, self.teacher_role)
 
     def to_dict(self):
         return {
@@ -132,8 +177,14 @@ class Teacher(db.Model):
             'department': self.department,
             'specialization': self.specialization,
             'qualification': self.qualification,
+            'teacher_role': self.teacher_role,
+            'teacher_role_display': self.teacher_role_display,
             'status': self.status,
-            'date_of_joining': self.date_of_joining.isoformat() if self.date_of_joining else None
+            'date_of_joining': self.date_of_joining.isoformat() if self.date_of_joining else None,
+            'can_message_parents': self.can_message_parents,
+            'can_manage_academics': self.can_manage_academics,
+            'can_manage_announcements': self.can_manage_announcements,
+            'can_manage_events': self.can_manage_events,
         }
 
 

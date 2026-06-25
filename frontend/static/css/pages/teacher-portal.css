@@ -1,0 +1,413 @@
+/* Teacher Role Badge */
+.teacher-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 20px;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-light);
+}
+
+.teacher-role-badge.info {
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--color-info);
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.teacher-role-badge.warning {
+    background: rgba(245, 158, 11, 0.08);
+    color: var(--color-warning);
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.teacher-role-badge.success {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--color-success);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.teacher-role-badge.accent {
+    background: rgba(230, 57, 70, 0.08);
+    color: var(--color-accent);
+    border-color: rgba(230, 57, 70, 0.2);
+}
+
+.teacher-role-badge i {
+    font-size: 16px;
+}
+
+/* Portal Tabs */
+.portal-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+    overflow-x: auto;
+}
+
+.portal-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.portal-tab:hover {
+    color: var(--color-text);
+    background: var(--color-bg-tertiary);
+}
+
+.portal-tab.active {
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-shadow: var(--shadow-sm);
+}
+
+.portal-tab i {
+    font-size: 16px;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    margin-bottom: 6px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-primary);
+    color: var(--color-text);
+    background: var(--color-bg);
+    transition: border-color var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23666'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+/* Message Status */
+.message-status {
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    margin-top: 12px;
+}
+
+.message-status.success {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.message-status.error {
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--color-error);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Parent Cards */
+.parent-card {
+    padding: 14px;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    transition: background var(--transition-fast);
+}
+
+.parent-card:hover {
+    background: var(--color-bg-secondary);
+}
+
+.parent-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.parent-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+    flex-shrink: 0;
+}
+
+.parent-name {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+
+.parent-children {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+}
+
+/* Academic Stats */
+.academic-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.academic-stat {
+    text-align: center;
+    padding: 16px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.academic-stat-value {
+    display: block;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+}
+
+.academic-stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+}
+
+/* Exam Cards */
+.exam-card {
+    padding: 14px;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+}
+
+.exam-name {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    margin-bottom: 6px;
+}
+
+.exam-meta {
+    display: flex;
+    gap: 12px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.exam-type {
+    text-transform: capitalize;
+}
+
+.exam-status {
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-medium);
+}
+
+.status-scheduled {
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--color-info);
+}
+
+.status-active {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--color-success);
+}
+
+.status-completed {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+}
+
+/* Announcement Cards */
+.announcement-card {
+    padding: 16px;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+}
+
+.announcement-card.priority-high {
+    border-left: 3px solid var(--color-warning);
+}
+
+.announcement-card.priority-urgent {
+    border-left: 3px solid var(--color-error);
+}
+
+.announcement-title {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: 6px;
+}
+
+.announcement-body {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.announcement-meta {
+    display: flex;
+    gap: 16px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.announcement-target {
+    padding: 2px 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    text-transform: capitalize;
+}
+
+/* Event Cards */
+.event-card {
+    display: flex;
+    gap: 16px;
+    padding: 14px;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.event-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    padding: 8px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.event-day {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+}
+
+.event-time {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.event-details {
+    flex: 1;
+}
+
+.event-title {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.event-meta {
+    display: flex;
+    gap: 12px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    align-items: center;
+}
+
+.event-meta i {
+    font-size: 12px;
+}
+
+.event-type-badge {
+    padding: 2px 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    text-transform: capitalize;
+}
+
+/* Message Compose */
+.message-compose-form {
+    max-width: 600px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--color-text-tertiary);
+    font-size: var(--font-size-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .portal-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .academic-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .event-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

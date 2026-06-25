@@ -7,7 +7,7 @@ from datetime import datetime
 import secrets
 
 from backend.app import db
-from backend.app.models import User, AuditLog
+from backend.app.models import User, Teacher, AuditLog
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -78,9 +78,24 @@ def login():
     user.last_login = datetime.utcnow()
     db.session.commit()
 
+    claims = {'role': user.role}
+    user_data = user.to_dict()
+
+    if user.role == 'teacher' and user.teacher_profile:
+        teacher = user.teacher_profile
+        claims['teacher_role'] = teacher.teacher_role
+        claims['teacher_id'] = teacher.id
+        user_data['teacher_role'] = teacher.teacher_role
+        user_data['teacher_role_display'] = teacher.teacher_role_display
+        user_data['teacher_id'] = teacher.id
+        user_data['can_message_parents'] = teacher.can_message_parents
+        user_data['can_manage_academics'] = teacher.can_manage_academics
+        user_data['can_manage_announcements'] = teacher.can_manage_announcements
+        user_data['can_manage_events'] = teacher.can_manage_events
+
     access_token = create_access_token(
         identity=str(user.id),
-        additional_claims={'role': user.role}
+        additional_claims=claims
     )
     refresh_token = create_refresh_token(identity=str(user.id))
 
@@ -97,7 +112,7 @@ def login():
     return jsonify({
         'access_token': access_token,
         'refresh_token': refresh_token,
-        'user': user.to_dict()
+        'user': user_data
     }), 200
 
 
@@ -110,9 +125,14 @@ def refresh():
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
+    claims = {'role': user.role}
+    if user.role == 'teacher' and user.teacher_profile:
+        claims['teacher_role'] = user.teacher_profile.teacher_role
+        claims['teacher_id'] = user.teacher_profile.id
+
     access_token = create_access_token(
         identity=str(user.id),
-        additional_claims={'role': user.role}
+        additional_claims=claims
     )
 
     return jsonify({'access_token': access_token}), 200
@@ -127,7 +147,17 @@ def get_current_user():
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
-    return jsonify({'user': user.to_dict()}), 200
+    user_data = user.to_dict()
+    if user.role == 'teacher' and user.teacher_profile:
+        teacher = user.teacher_profile
+        user_data['teacher_role'] = teacher.teacher_role
+        user_data['teacher_role_display'] = teacher.teacher_role_display
+        user_data['teacher_id'] = teacher.id
+        user_data['can_message_parents'] = teacher.can_message_parents
+        user_data['can_manage_academics'] = teacher.can_manage_academics
+        user_data['can_manage_announcements'] = teacher.can_manage_announcements
+        user_data['can_manage_events'] = teacher.can_manage_events
+    return jsonify({'user': user_data}), 200
 
 
 @auth_bp.route('/forgot-password', methods=['POST'])

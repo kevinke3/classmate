@@ -75,7 +75,16 @@
 }
 
 .sidebar-collapsed .sidebar-toggle {
-    display: none;
+    position: absolute;
+    right: -14px;
+    top: 24px;
+    width: 28px;
+    height: 28px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-full);
+    z-index: 101;
+    box-shadow: var(--shadow-sm);
 }
 
 .sidebar-nav {
@@ -126,7 +135,11 @@
     font-size: 20px;
     flex-shrink: 0;
     width: 20px;
+    min-width: 20px;
     text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-label {
@@ -137,6 +150,21 @@
     opacity: 0;
     width: 0;
     overflow: hidden;
+    display: none;
+}
+
+.sidebar-collapsed .nav-item {
+    justify-content: center;
+    padding: 10px;
+}
+
+.sidebar-collapsed .logout-btn {
+    justify-content: center;
+    padding: 10px;
+}
+
+.sidebar-collapsed .logout-btn .nav-label {
+    display: none;
 }
 
 .sidebar-footer {

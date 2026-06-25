@@ -2,10 +2,10 @@
 from datetime import date, datetime, timedelta
 from backend.app import create_app, db
 from backend.app.models import (
-    User, Student, Teacher, Parent, SchoolClass, Stream,
+    User, Student, Teacher, Parent, ParentStudent, SchoolClass, Stream,
     Subject, Attendance, FeeStructure, FeeRecord, Examination,
     Grade, Announcement, Event, Notification, SchoolSettings,
-    Invoice, Receipt
+    Invoice, Receipt, ClassTeacher
 )
 
 
@@ -31,17 +31,18 @@ def seed():
         admin.set_password('admin123')
         db.session.add(admin)
 
-        # Teacher users
+        # Teacher users with sub-roles
+        # (first, last, email, dept, spec, emp_id, teacher_role)
         teachers_data = [
-            ('Mary', 'Kariuki', 'mary@classmate.io', 'Sciences', 'Biology', 'EMP/001'),
-            ('Peter', 'Oloo', 'peter@classmate.io', 'Mathematics', 'Mathematics', 'EMP/002'),
-            ('Agnes', 'Njeri', 'agnes@classmate.io', 'Languages', 'English', 'EMP/003'),
-            ('John', 'Waweru', 'john@classmate.io', 'Sciences', 'Chemistry', 'EMP/004'),
-            ('Sarah', 'Otieno', 'sarah@classmate.io', 'Humanities', 'History', 'EMP/005'),
+            ('Mary', 'Kariuki', 'mary@classmate.io', 'Sciences', 'Biology', 'EMP/001', 'class_teacher'),
+            ('Peter', 'Oloo', 'peter@classmate.io', 'Mathematics', 'Mathematics', 'EMP/002', 'head_of_studies'),
+            ('Agnes', 'Njeri', 'agnes@classmate.io', 'Languages', 'English', 'EMP/003', 'senior_teacher'),
+            ('John', 'Waweru', 'john@classmate.io', 'Sciences', 'Chemistry', 'EMP/004', 'deputy'),
+            ('Sarah', 'Otieno', 'sarah@classmate.io', 'Humanities', 'History', 'EMP/005', 'class_teacher'),
         ]
 
         teachers = []
-        for first, last, email, dept, spec, emp_id in teachers_data:
+        for first, last, email, dept, spec, emp_id, t_role in teachers_data:
             user = User(
                 email=email, first_name=first, last_name=last,
                 role='teacher', is_verified=True
@@ -53,7 +54,8 @@ def seed():
             teacher = Teacher(
                 user_id=user.id, employee_id=emp_id,
                 department=dept, specialization=spec,
-                qualification='Masters'
+                qualification='Masters',
+                teacher_role=t_role
             )
             db.session.add(teacher)
             teachers.append(teacher)
@@ -149,6 +151,24 @@ def seed():
 
         parent = Parent(user_id=parent_user.id, occupation='Engineer')
         db.session.add(parent)
+        db.session.flush()
+
+        # Link parent to first student
+        parent_student = ParentStudent(
+            parent_id=parent.id,
+            student_id=students[0].id,
+            relationship='parent'
+        )
+        db.session.add(parent_student)
+
+        # Assign class teachers to classes
+        db.session.flush()
+        # Mary (class_teacher) -> Form 1, Sarah (class_teacher) -> Form 2
+        ct1 = ClassTeacher(teacher_id=teachers[0].id, class_id=classes[0].id, is_class_teacher=True)
+        ct2 = ClassTeacher(teacher_id=teachers[4].id, class_id=classes[1].id, is_class_teacher=True)
+        # Deputy John also assigned to Form 3 as class teacher
+        ct3 = ClassTeacher(teacher_id=teachers[3].id, class_id=classes[2].id, is_class_teacher=True)
+        db.session.add_all([ct1, ct2, ct3])
 
         db.session.flush()
 
@@ -256,7 +276,10 @@ def seed():
         print('Login credentials:')
         print('  Admin: admin@classmate.io / admin123')
         print('  Finance: finance@classmate.io / finance123')
-        print('  Teacher: mary@classmate.io / teacher123')
+        print('  Teacher (Class Teacher): mary@classmate.io / teacher123')
+        print('  Teacher (Head of Studies): peter@classmate.io / teacher123')
+        print('  Teacher (Senior Teacher): agnes@classmate.io / teacher123')
+        print('  Teacher (Deputy): john@classmate.io / teacher123')
         print('  Parent: parent@classmate.io / parent123')
 
 

@@ -65,5 +65,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+        if (user.role === 'teacher') {
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                const allowed = ['/dashboard', '/messages', '/attendance', '/settings'];
+                if (!allowed.includes(href)) {
+                    item.style.display = 'none';
+                }
+            });
+            // Remap Dashboard to Teacher Portal
+            const dashLink = document.querySelector('.sidebar-nav .nav-item[href="/dashboard"]');
+            if (dashLink) {
+                dashLink.setAttribute('href', '/teacher-portal');
+                const label = dashLink.querySelector('.nav-label');
+                if (label) label.textContent = 'Teacher Portal';
+            }
+        }
+
+        // Show teacher role display in sidebar
+        if (user.role === 'teacher' && user.teacher_role_display) {
+            const roleEl = document.getElementById('userRole');
+            if (roleEl) roleEl.textContent = user.teacher_role_display;
+        }
     }
 });
