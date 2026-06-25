@@ -123,7 +123,7 @@ function showAddStudentModal() {
         <div class="modal animate-scale-in">
             <div class="modal-header">
                 <h3 class="modal-title">Add New Student</h3>
-                <button class="modal-close" onclick="closeModal()"><i class="lucide-x"></i></button>
+                <button class="modal-close" onclick="closeModal()"><i class="icon-x"></i></button>
             </div>
             <div class="modal-body">
                 <form id="addStudentForm">

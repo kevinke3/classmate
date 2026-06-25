@@ -77,7 +77,7 @@ async function loadPayments() {
                 <td>${formatDate(p.payment_date)}</td>
                 <td>
                     <button class="btn btn-outline btn-sm" onclick="viewPaymentReceipt(${p.id})">
-                        <i class="lucide-receipt"></i> Receipt
+                        <i class="icon-receipt"></i> Receipt
                     </button>
                 </td>
             </tr>
@@ -115,7 +115,7 @@ async function loadInvoices() {
                 <td><span class="badge badge-${getStatusBadge(inv.status)}">${inv.status}</span></td>
                 <td>
                     <button class="btn btn-outline btn-sm" onclick="viewInvoice(${inv.id})">
-                        <i class="lucide-printer"></i> Print
+                        <i class="icon-printer"></i> Print
                     </button>
                 </td>
             </tr>
@@ -150,7 +150,7 @@ async function loadReceipts() {
                 <td>${formatDate(r.created_at)}</td>
                 <td>
                     <button class="btn btn-outline btn-sm" onclick="viewReceipt(${r.id})">
-                        <i class="lucide-printer"></i> Print
+                        <i class="icon-printer"></i> Print
                     </button>
                 </td>
             </tr>
@@ -417,7 +417,7 @@ async function showRecordPaymentModal() {
         <div class="modal" style="max-width: 500px;">
             <div class="modal-header">
                 <h3 class="modal-title">Record Payment</h3>
-                <button class="btn btn-outline btn-sm close-modal"><i class="lucide-x"></i></button>
+                <button class="btn btn-outline btn-sm close-modal"><i class="icon-x"></i></button>
             </div>
             <div class="modal-body">
                 <form id="paymentForm">
@@ -498,7 +498,7 @@ async function showCreateInvoiceModal() {
         <div class="modal" style="max-width: 500px;">
             <div class="modal-header">
                 <h3 class="modal-title">Create Invoice</h3>
-                <button class="btn btn-outline btn-sm close-modal"><i class="lucide-x"></i></button>
+                <button class="btn btn-outline btn-sm close-modal"><i class="icon-x"></i></button>
             </div>
             <div class="modal-body">
                 <form id="invoiceForm">

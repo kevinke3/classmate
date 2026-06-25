@@ -13,7 +13,7 @@
 {% block content %}
 <!-- Role Badge -->
 <div id="roleBadge" class="teacher-role-badge animate-fade-in">
-    <i class="lucide-shield"></i>
+    <i class="icon-shield"></i>
     <span id="roleBadgeText">Teacher</span>
 </div>
 
@@ -21,28 +21,28 @@
 <div class="dashboard-grid" id="statsGrid">
     <div class="stat-card info animate-fade-in">
         <div class="stat-card-header">
-            <div class="stat-card-icon info"><i class="lucide-book-open"></i></div>
+            <div class="stat-card-icon info"><i class="icon-book-open"></i></div>
         </div>
         <div class="stat-card-value" id="statClasses">0</div>
         <div class="stat-card-label">My Classes</div>
     </div>
     <div class="stat-card success animate-fade-in" style="animation-delay: 0.1s">
         <div class="stat-card-header">
-            <div class="stat-card-icon success"><i class="lucide-users"></i></div>
+            <div class="stat-card-icon success"><i class="icon-users"></i></div>
         </div>
         <div class="stat-card-value" id="statStudents">0</div>
         <div class="stat-card-label">Total Students</div>
     </div>
     <div class="stat-card warning animate-fade-in" style="animation-delay: 0.2s">
         <div class="stat-card-header">
-            <div class="stat-card-icon warning"><i class="lucide-clipboard-list"></i></div>
+            <div class="stat-card-icon warning"><i class="icon-clipboard-list"></i></div>
         </div>
         <div class="stat-card-value" id="statAssignments">0</div>
         <div class="stat-card-label">Active Assignments</div>
     </div>
     <div class="stat-card accent animate-fade-in" style="animation-delay: 0.3s">
         <div class="stat-card-header">
-            <div class="stat-card-icon accent"><i class="lucide-file-check"></i></div>
+            <div class="stat-card-icon accent"><i class="icon-file-check"></i></div>
         </div>
         <div class="stat-card-value" id="statExams">0</div>
         <div class="stat-card-label">Examinations</div>
@@ -52,19 +52,19 @@
 <!-- Tab Navigation -->
 <div class="portal-tabs animate-fade-in" style="animation-delay: 0.35s">
     <button class="portal-tab active" data-tab="overview">
-        <i class="lucide-layout-dashboard"></i> Overview
+        <i class="icon-layout-dashboard"></i> Overview
     </button>
     <button class="portal-tab" data-tab="messaging" id="tabMessaging" style="display:none;">
-        <i class="lucide-message-square"></i> Message Parents
+        <i class="icon-message-square"></i> Message Parents
     </button>
     <button class="portal-tab" data-tab="academics" id="tabAcademics" style="display:none;">
-        <i class="lucide-graduation-cap"></i> Academics
+        <i class="icon-graduation-cap"></i> Academics
     </button>
     <button class="portal-tab" data-tab="announcements" id="tabAnnouncements" style="display:none;">
-        <i class="lucide-megaphone"></i> Announcements
+        <i class="icon-megaphone"></i> Announcements
     </button>
     <button class="portal-tab" data-tab="events" id="tabEvents" style="display:none;">
-        <i class="lucide-calendar"></i> Events
+        <i class="icon-calendar"></i> Events
     </button>
 </div>
 
@@ -85,7 +85,7 @@
             </div>
             <div class="quick-actions" id="quickActions">
                 <button class="quick-action-btn" onclick="window.location.href='/attendance'">
-                    <i class="lucide-calendar-check"></i>
+                    <i class="icon-calendar-check"></i>
                     <span>Mark Attendance</span>
                 </button>
             </div>
@@ -116,7 +116,7 @@
                     <textarea class="form-textarea" id="msgBody" rows="5" placeholder="Type your message to the parent..."></textarea>
                 </div>
                 <button class="btn btn-primary" id="sendMessageBtn">
-                    <i class="lucide-send"></i> Send Message
+                    <i class="icon-send"></i> Send Message
                 </button>
             </div>
             <div id="messageStatus" class="message-status" style="display:none;"></div>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <button class="btn btn-primary" id="createExamBtn">
-                    <i class="lucide-plus"></i> Create Examination
+                    <i class="icon-plus"></i> Create Examination
                 </button>
             </div>
         </div>
@@ -220,7 +220,7 @@
                     <textarea class="form-textarea" id="annBody" rows="5" placeholder="Write your announcement..."></textarea>
                 </div>
                 <button class="btn btn-primary" id="postAnnouncementBtn">
-                    <i class="lucide-megaphone"></i> Post Announcement
+                    <i class="icon-megaphone"></i> Post Announcement
                 </button>
                 <div id="annStatus" class="message-status" style="display:none;"></div>
             </div>
@@ -277,7 +277,7 @@
                     </select>
                 </div>
                 <button class="btn btn-primary" id="createEventBtn">
-                    <i class="lucide-calendar-plus"></i> Create Event
+                    <i class="icon-calendar-plus"></i> Create Event
                 </button>
                 <div id="eventStatus" class="message-status" style="display:none;"></div>
             </div>

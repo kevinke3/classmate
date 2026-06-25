@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const type = passwordInput.type === 'password' ? 'text' : 'password';
             passwordInput.type = type;
             toggleBtn.innerHTML = type === 'password'
-                ? '<i class="lucide-eye"></i>'
-                : '<i class="lucide-eye-off"></i>';
+                ? '<i class="icon-eye"></i>'
+                : '<i class="icon-eye-off"></i>';
         });
     }
 

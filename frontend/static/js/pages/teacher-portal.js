@@ -64,7 +64,7 @@ function loadQuickActions(user) {
     const container = document.getElementById('quickActions');
     let html = `
         <button class="quick-action-btn" onclick="window.location.href='/attendance'">
-            <i class="lucide-calendar-check"></i>
+            <i class="icon-calendar-check"></i>
             <span>Mark Attendance</span>
         </button>
     `;
@@ -72,7 +72,7 @@ function loadQuickActions(user) {
     if (user.can_message_parents) {
         html += `
             <button class="quick-action-btn" onclick="switchTab('messaging')">
-                <i class="lucide-message-square"></i>
+                <i class="icon-message-square"></i>
                 <span>Message Parents</span>
             </button>
         `;
@@ -80,7 +80,7 @@ function loadQuickActions(user) {
     if (user.can_manage_academics) {
         html += `
             <button class="quick-action-btn" onclick="switchTab('academics')">
-                <i class="lucide-graduation-cap"></i>
+                <i class="icon-graduation-cap"></i>
                 <span>Manage Academics</span>
             </button>
         `;
@@ -88,7 +88,7 @@ function loadQuickActions(user) {
     if (user.can_manage_announcements) {
         html += `
             <button class="quick-action-btn" onclick="switchTab('announcements')">
-                <i class="lucide-megaphone"></i>
+                <i class="icon-megaphone"></i>
                 <span>Post Announcement</span>
             </button>
         `;
@@ -96,7 +96,7 @@ function loadQuickActions(user) {
     if (user.can_manage_events) {
         html += `
             <button class="quick-action-btn" onclick="switchTab('events')">
-                <i class="lucide-calendar-plus"></i>
+                <i class="icon-calendar-plus"></i>
                 <span>Create Event</span>
             </button>
         `;
@@ -104,7 +104,7 @@ function loadQuickActions(user) {
 
     html += `
         <button class="quick-action-btn" onclick="window.location.href='/messages'">
-            <i class="lucide-mail"></i>
+            <i class="icon-mail"></i>
             <span>Messages</span>
         </button>
     `;
@@ -306,7 +306,7 @@ async function loadEvents() {
                     <div class="event-details">
                         <div class="event-title">${evt.title}</div>
                         <div class="event-meta">
-                            ${evt.location ? `<span><i class="lucide-map-pin"></i> ${evt.location}</span>` : ''}
+                            ${evt.location ? `<span><i class="icon-map-pin"></i> ${evt.location}</span>` : ''}
                             ${evt.event_type ? `<span class="event-type-badge">${evt.event_type}</span>` : ''}
                         </div>
                     </div>
@@ -334,7 +334,7 @@ function initEventHandlers(user) {
             }
 
             sendBtn.disabled = true;
-            sendBtn.innerHTML = '<i class="lucide-loader"></i> Sending...';
+            sendBtn.innerHTML = '<i class="icon-loader"></i> Sending...';
 
             try {
                 await api.post('/teachers/message-parent', {
@@ -350,7 +350,7 @@ function initEventHandlers(user) {
                 showStatus('messageStatus', 'Failed to send message', 'error');
             } finally {
                 sendBtn.disabled = false;
-                sendBtn.innerHTML = '<i class="lucide-send"></i> Send Message';
+                sendBtn.innerHTML = '<i class="icon-send"></i> Send Message';
             }
         });
     }

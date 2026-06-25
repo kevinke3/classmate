@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (notifications.length === 0) {
             notificationList.innerHTML = `
                 <div class="empty-state" style="padding: 32px;">
-                    <i class="lucide-bell-off"></i>
+                    <i class="icon-bell-off"></i>
                     <p>No notifications</p>
                 </div>
             `;
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notificationList.innerHTML = notifications.map(n => `
             <div class="notification-item ${n.is_read ? '' : 'unread'}">
                 <div class="notification-icon" style="background: rgba(230, 57, 70, 0.08); color: var(--color-accent);">
-                    <i class="lucide-bell"></i>
+                    <i class="icon-bell"></i>
                 </div>
                 <div class="notification-content">
                     <div class="notification-title">${n.title}</div>
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notificationList.innerHTML = `
             <div class="notification-item unread">
                 <div class="notification-icon" style="background: rgba(230, 57, 70, 0.08); color: var(--color-accent);">
-                    <i class="lucide-bell"></i>
+                    <i class="icon-bell"></i>
                 </div>
                 <div class="notification-content">
                     <div class="notification-title">New assignment posted</div>
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="notification-item unread">
                 <div class="notification-icon" style="background: rgba(16, 185, 129, 0.08); color: var(--color-success);">
-                    <i class="lucide-check-circle"></i>
+                    <i class="icon-check-circle"></i>
                 </div>
                 <div class="notification-content">
                     <div class="notification-title">Fee payment received</div>
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="notification-item">
                 <div class="notification-icon" style="background: rgba(59, 130, 246, 0.08); color: var(--color-info);">
-                    <i class="lucide-calendar"></i>
+                    <i class="icon-calendar"></i>
                 </div>
                 <div class="notification-content">
                     <div class="notification-title">Exam schedule updated</div>
