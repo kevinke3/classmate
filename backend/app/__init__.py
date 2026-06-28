@@ -34,6 +34,7 @@ def create_app(config_name='default'):
     from backend.app.academics.routes import academics_bp
     from backend.app.attendance.routes import attendance_bp
     from backend.app.finance.routes import finance_bp
+    import backend.app.finance.models  # noqa: F401 - register finance models
     from backend.app.examinations.routes import examinations_bp
     from backend.app.messaging.routes import messaging_bp
     from backend.app.notifications.routes import notifications_bp

@@ -7,6 +7,10 @@ from backend.app.models import (
     Grade, Announcement, Event, Notification, SchoolSettings,
     Invoice, Receipt, ClassTeacher
 )
+from backend.app.finance.models import (
+    FeeCategory, FeeComponent, ExpenseCategory, Expense,
+    Income, FinanceSettings, BankAccount, FinanceNotification
+)
 
 
 def seed():
@@ -270,6 +274,92 @@ def seed():
                 generated_by=finance_user.id
             )
             db.session.add(receipt)
+
+        # Finance Settings
+        fin_settings = FinanceSettings(
+            currency='KES',
+            currency_symbol='KES',
+            receipt_prefix='RCP',
+            invoice_prefix='INV',
+            grace_period_days=14,
+            auto_reminder=True,
+            reminder_days_before=7,
+            payment_methods='cash,bank_transfer,cheque,mobile_money',
+            receipt_footer_text='Thank you for your payment. This is an official receipt.',
+            invoice_footer_text='Please make payment before the due date to avoid penalties.'
+        )
+        db.session.add(fin_settings)
+
+        # Fee Categories
+        categories_data = [
+            ('Tuition', 'TUI', 'Term tuition fees', True),
+            ('Boarding', 'BRD', 'Boarding fees for residential students', False),
+            ('Transport', 'TRN', 'School transport fees', False),
+            ('Examination', 'EXM', 'Exam registration and processing fees', True),
+            ('Activity', 'ACT', 'Co-curricular and club activities', False),
+            ('Meals', 'MEL', 'Lunch and meals program', False),
+            ('Uniform', 'UNI', 'School uniform fees', False),
+            ('Development', 'DEV', 'School development levy', True),
+            ('Library', 'LIB', 'Library and resource fees', True),
+            ('ICT', 'ICT', 'Computer and technology fees', True),
+        ]
+        for i, (name, code, desc, mandatory) in enumerate(categories_data):
+            cat = FeeCategory(name=name, code=code, description=desc, is_mandatory=mandatory, sort_order=i)
+            db.session.add(cat)
+
+        # Expense Categories
+        exp_categories = [
+            ('Salaries', 'SAL', 'Staff salaries and wages'),
+            ('Utilities', 'UTL', 'Electricity, water, internet'),
+            ('Maintenance', 'MNT', 'Building and equipment maintenance'),
+            ('Supplies', 'SUP', 'Teaching and office supplies'),
+            ('Transport', 'EXP-TRN', 'Vehicle fuel and maintenance'),
+            ('Food', 'FD', 'Kitchen and catering expenses'),
+            ('Equipment', 'EQP', 'Furniture and equipment purchases'),
+        ]
+        for name, code, desc in exp_categories:
+            db.session.add(ExpenseCategory(name=name, code=code, description=desc))
+
+        # Bank Account
+        bank = BankAccount(
+            bank_name='Kenya Commercial Bank',
+            account_name='ClassMate Academy',
+            account_number='1234567890',
+            branch='Main Branch',
+            is_primary=True
+        )
+        db.session.add(bank)
+
+        # Sample expenses
+        expense_items = [
+            (1, 50000, 'Monthly electricity bill', 'Kenya Power', 'bank_transfer'),
+            (2, 25000, 'Water supply', 'Nairobi Water', 'bank_transfer'),
+            (3, 15000, 'Classroom repairs', 'ABC Contractors', 'cheque'),
+            (4, 8000, 'Exam papers printing', 'PrintExpress', 'cash'),
+        ]
+        for cat_id, amount, desc, vendor, method in expense_items:
+            exp = Expense(
+                category_id=cat_id,
+                amount=amount,
+                description=desc,
+                vendor=vendor,
+                payment_method=method,
+                expense_date=date.today() - timedelta(days=cat_id * 3),
+                recorded_by=finance_user.id,
+                status='recorded'
+            )
+            db.session.add(exp)
+
+        # Sample income
+        inc = Income(
+            source='Government Grant',
+            amount=200000,
+            description='Capitation grant for Term 1',
+            income_type='grant',
+            income_date=date.today() - timedelta(days=30),
+            recorded_by=finance_user.id
+        )
+        db.session.add(inc)
 
         db.session.commit()
         print('Database seeded successfully!')
