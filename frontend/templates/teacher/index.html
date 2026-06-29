@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Teacher Portal{% endblock %}
+{% block page_title %}Teacher Portal{% endblock %}
+{% block page_subtitle %}Manage your classes and students{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/teacher-portal.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Role Badge -->
+<div id="roleBadge" class="teacher-role-badge animate-fade-in">
+    <i class="icon-shield"></i>
+    <span id="roleBadgeText">Teacher</span>
+</div>
+
+<!-- Stats -->
+<div class="dashboard-grid" id="statsGrid">
+    <div class="stat-card info animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="icon-book-open"></i></div>
+        </div>
+        <div class="stat-card-value" id="statClasses">0</div>
+        <div class="stat-card-label">My Classes</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="icon-users"></i></div>
+        </div>
+        <div class="stat-card-value" id="statStudents">0</div>
+        <div class="stat-card-label">Total Students</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="icon-clipboard-list"></i></div>
+        </div>
+        <div class="stat-card-value" id="statAssignments">0</div>
+        <div class="stat-card-label">Active Assignments</div>
+    </div>
+    <div class="stat-card accent animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="icon-file-check"></i></div>
+        </div>
+        <div class="stat-card-value" id="statExams">0</div>
+        <div class="stat-card-label">Examinations</div>
+    </div>
+</div>
+
+<!-- Tab Navigation -->
+<div class="portal-tabs animate-fade-in" style="animation-delay: 0.35s">
+    <button class="portal-tab active" data-tab="overview">
+        <i class="icon-layout-dashboard"></i> Overview
+    </button>
+    <button class="portal-tab" data-tab="messaging" id="tabMessaging" style="display:none;">
+        <i class="icon-message-square"></i> Message Parents
+    </button>
+    <button class="portal-tab" data-tab="academics" id="tabAcademics" style="display:none;">
+        <i class="icon-graduation-cap"></i> Academics
+    </button>
+    <button class="portal-tab" data-tab="announcements" id="tabAnnouncements" style="display:none;">
+        <i class="icon-megaphone"></i> Announcements
+    </button>
+    <button class="portal-tab" data-tab="events" id="tabEvents" style="display:none;">
+        <i class="icon-calendar"></i> Events
+    </button>
+</div>
+
+<!-- Overview Tab -->
+<div class="tab-content active" id="content-overview">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="data-card animate-fade-in" style="animation-delay: 0.4s">
+            <div class="data-card-header">
+                <h3 class="data-card-title">My Classes</h3>
+            </div>
+            <div class="data-card-body" id="myClassesList">
+                <div class="empty-state">Loading classes...</div>
+            </div>
+        </div>
+        <div class="data-card animate-fade-in" style="animation-delay: 0.5s">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Quick Actions</h3>
+            </div>
+            <div class="quick-actions" id="quickActions">
+                <button class="quick-action-btn" onclick="window.location.href='/attendance'">
+                    <i class="icon-calendar-check"></i>
+                    <span>Mark Attendance</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messaging Tab (Class Teacher / Deputy) -->
+<div class="tab-content" id="content-messaging">
+    <div class="data-card animate-fade-in">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Message Parents of My Class</h3>
+        </div>
+        <div class="data-card-body">
+            <div class="message-compose-form">
+                <div class="form-group">
+                    <label class="form-label">Select Parent</label>
+                    <select class="form-select" id="parentSelect">
+                        <option value="">Loading parents...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <input type="text" class="form-input" id="msgSubject" placeholder="Message subject">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" id="msgBody" rows="5" placeholder="Type your message to the parent..."></textarea>
+                </div>
+                <button class="btn btn-primary" id="sendMessageBtn">
+                    <i class="icon-send"></i> Send Message
+                </button>
+            </div>
+            <div id="messageStatus" class="message-status" style="display:none;"></div>
+        </div>
+    </div>
+    <div class="data-card animate-fade-in" style="margin-top: 20px;">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Parents in My Class</h3>
+        </div>
+        <div class="data-card-body" id="parentsList">
+            <div class="empty-state">Loading parents...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Academics Tab (Head of Studies / Deputy) -->
+<div class="tab-content" id="content-academics">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="data-card animate-fade-in">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Academic Overview</h3>
+            </div>
+            <div class="data-card-body" id="academicOverview">
+                <div class="empty-state">Loading academic data...</div>
+            </div>
+        </div>
+        <div class="data-card animate-fade-in">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Create Examination</h3>
+            </div>
+            <div class="data-card-body">
+                <div class="form-group">
+                    <label class="form-label">Exam Name</label>
+                    <input type="text" class="form-input" id="examName" placeholder="e.g. End of Term 1 Exams">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Exam Type</label>
+                    <select class="form-select" id="examType">
+                        <option value="term">Term Exam</option>
+                        <option value="midterm">Mid-Term Exam</option>
+                        <option value="cat">CAT</option>
+                        <option value="mock">Mock Exam</option>
+                    </select>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" class="form-input" id="examStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <input type="date" class="form-input" id="examEndDate">
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="createExamBtn">
+                    <i class="icon-plus"></i> Create Examination
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="data-card animate-fade-in" style="margin-top: 20px;">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Recent Examinations</h3>
+        </div>
+        <div class="data-card-body" id="recentExams">
+            <div class="empty-state">Loading exams...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Announcements Tab (Senior Teacher / Deputy) -->
+<div class="tab-content" id="content-announcements">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="data-card animate-fade-in">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Post Announcement</h3>
+            </div>
+            <div class="data-card-body">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="annTitle" placeholder="Announcement title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Target Audience</label>
+                    <select class="form-select" id="annTarget">
+                        <option value="teacher">Teachers Only</option>
+                        <option value="all">Everyone</option>
+                        <option value="parent">Parents</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" id="annPriority">
+                        <option value="normal">Normal</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" id="annBody" rows="5" placeholder="Write your announcement..."></textarea>
+                </div>
+                <button class="btn btn-primary" id="postAnnouncementBtn">
+                    <i class="icon-megaphone"></i> Post Announcement
+                </button>
+                <div id="annStatus" class="message-status" style="display:none;"></div>
+            </div>
+        </div>
+        <div class="data-card animate-fade-in">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Recent Announcements</h3>
+            </div>
+            <div class="data-card-body" id="announcementsList">
+                <div class="empty-state">Loading announcements...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Events Tab (Senior Teacher / Deputy) -->
+<div class="tab-content" id="content-events">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="data-card animate-fade-in">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Create Event</h3>
+            </div>
+            <div class="data-card-body">
+                <div class="form-group">
+                    <label class="form-label">Event Title</label>
+                    <input type="text" class="form-input" id="eventTitle" placeholder="e.g. Staff Meeting">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="eventDesc" rows="3" placeholder="Event details..."></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="eventDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Time</label>
+                        <input type="time" class="form-input" id="eventTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-input" id="eventLocation" placeholder="e.g. Staff Room, Main Hall">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Event Type</label>
+                    <select class="form-select" id="eventType">
+                        <option value="meeting">Meeting</option>
+                        <option value="academic">Academic</option>
+                        <option value="sports">Sports</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="administrative">Administrative</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="createEventBtn">
+                    <i class="icon-calendar-plus"></i> Create Event
+                </button>
+                <div id="eventStatus" class="message-status" style="display:none;"></div>
+            </div>
+        </div>
+        <div class="data-card animate-fade-in">
+            <div class="data-card-header">
+                <h3 class="data-card-title">Upcoming Events</h3>
+            </div>
+            <div class="data-card-body" id="eventsList">
+                <div class="empty-state">Loading events...</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pages/teacher-portal.js') }}"></script>
+{% endblock %}

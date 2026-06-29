@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Attendance{% endblock %}
+{% block nav_attendance %}active{% endblock %}
+{% block page_title %}Attendance{% endblock %}
+{% block page_subtitle %}Track daily attendance and generate reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="stat-card success animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="icon-user-check"></i></div>
+        </div>
+        <div class="stat-card-value">1,172</div>
+        <div class="stat-card-label">Present Today</div>
+    </div>
+    <div class="stat-card accent animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="icon-user-x"></i></div>
+        </div>
+        <div class="stat-card-value">75</div>
+        <div class="stat-card-label">Absent Today</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="icon-clock"></i></div>
+        </div>
+        <div class="stat-card-value">18</div>
+        <div class="stat-card-label">Late Arrivals</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="icon-percent"></i></div>
+        </div>
+        <div class="stat-card-value">94%</div>
+        <div class="stat-card-label">Attendance Rate</div>
+    </div>
+</div>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <select class="table-filter" id="classSelect">
+            <option value="">Select Class</option>
+            <option value="1">Form 1 East</option>
+            <option value="2">Form 1 West</option>
+            <option value="3">Form 2 East</option>
+            <option value="4">Form 2 West</option>
+            <option value="5">Form 3 East</option>
+            <option value="6">Form 3 West</option>
+            <option value="7">Form 4 East</option>
+            <option value="8">Form 4 West</option>
+        </select>
+        <input type="date" class="table-filter" id="dateSelect" style="width: auto;">
+    </div>
+    <button class="btn btn-primary" id="markAttendanceBtn">
+        <i class="icon-check-square"></i>
+        Mark Attendance
+    </button>
+</div>
+
+<div class="table-container animate-fade-in" style="animation-delay: 0.4s">
+    <div class="table-header">
+        <h3 class="table-title">Attendance Sheet - Form 3 East</h3>
+        <div class="table-actions">
+            <button class="btn btn-outline btn-sm"><i class="icon-download"></i> Export</button>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Adm No.</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">GW</div><span class="user-cell-name">Grace Wanjiku</span></div></td>
+                <td>ADM/2024/001</td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><strong>100%</strong></td>
+            </tr>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">JO</div><span class="user-cell-name">James Ochieng</span></div></td>
+                <td>ADM/2024/002</td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-error">A</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><strong>80%</strong></td>
+            </tr>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">FK</div><span class="user-cell-name">Faith Kamau</span></div></td>
+                <td>ADM/2024/003</td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-warning">L</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><strong>90%</strong></td>
+            </tr>
+            <tr>
+                <td><div class="user-cell"><div class="user-cell-avatar">DM</div><span class="user-cell-name">David Mwangi</span></div></td>
+                <td>ADM/2024/004</td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-success">P</span></td>
+                <td><span class="badge badge-error">A</span></td>
+                <td><span class="badge badge-error">A</span></td>
+                <td><strong>60%</strong></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (!auth.requireAuth()) return;
+    document.getElementById('dateSelect').valueAsDate = new Date();
+});
+</script>
+{% endblock %}

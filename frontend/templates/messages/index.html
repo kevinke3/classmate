@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Messages{% endblock %}
+{% block nav_messages %}active{% endblock %}
+{% block page_title %}Messages{% endblock %}
+{% block page_subtitle %}Communication hub{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/messages.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="messages-layout">
+    <div class="conversations-panel">
+        <div class="conversations-header">
+            <div class="table-search" style="width: 100%;">
+                <i class="icon-search"></i>
+                <input type="text" placeholder="Search conversations..." id="conversationSearch">
+            </div>
+        </div>
+        <div class="conversations-list" id="conversationsList">
+            <div class="conversation-item active">
+                <div class="conversation-avatar">MK</div>
+                <div class="conversation-info">
+                    <div class="conversation-name">Mary Kariuki</div>
+                    <div class="conversation-preview">Thank you for the exam schedule update</div>
+                </div>
+                <div class="conversation-meta">
+                    <div class="conversation-time">2m</div>
+                    <div class="conversation-badge">2</div>
+                </div>
+            </div>
+            <div class="conversation-item">
+                <div class="conversation-avatar">PO</div>
+                <div class="conversation-info">
+                    <div class="conversation-name">Peter Oloo</div>
+                    <div class="conversation-preview">The Form 3 results are ready</div>
+                </div>
+                <div class="conversation-meta">
+                    <div class="conversation-time">15m</div>
+                </div>
+            </div>
+            <div class="conversation-item">
+                <div class="conversation-avatar" style="background: rgba(59, 130, 246, 0.1); color: var(--color-info);">SC</div>
+                <div class="conversation-info">
+                    <div class="conversation-name">Staff Channel</div>
+                    <div class="conversation-preview">Meeting reminder for Friday</div>
+                </div>
+                <div class="conversation-meta">
+                    <div class="conversation-time">1h</div>
+                </div>
+            </div>
+            <div class="conversation-item">
+                <div class="conversation-avatar">AN</div>
+                <div class="conversation-info">
+                    <div class="conversation-name">Agnes Njeri</div>
+                    <div class="conversation-preview">Can we discuss the English syllabus?</div>
+                </div>
+                <div class="conversation-meta">
+                    <div class="conversation-time">3h</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chat-panel">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="conversation-avatar">MK</div>
+                <div>
+                    <div class="chat-header-name">Mary Kariuki</div>
+                    <div class="chat-header-status">Biology Teacher</div>
+                </div>
+            </div>
+            <div class="chat-header-actions">
+                <button class="header-btn"><i class="icon-phone"></i></button>
+                <button class="header-btn"><i class="icon-more-vertical"></i></button>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message-bubble received">
+                <div class="message-content">Hi, I wanted to confirm the exam schedule for next week. Are we starting with Biology on Monday?</div>
+                <div class="message-time">10:30 AM</div>
+            </div>
+            <div class="message-bubble sent">
+                <div class="message-content">Yes, Biology is confirmed for Monday morning. The full timetable has been shared with all teachers.</div>
+                <div class="message-time">10:32 AM</div>
+            </div>
+            <div class="message-bubble received">
+                <div class="message-content">Thank you for the exam schedule update. I will prepare the papers by Friday.</div>
+                <div class="message-time">10:35 AM</div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="Type a message..." id="messageInput">
+            <button class="btn btn-primary" id="sendMessageBtn">
+                <i class="icon-send"></i>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/pages/messages.js') }}"></script>
+{% endblock %}

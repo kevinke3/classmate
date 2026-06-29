@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassMate - Finance Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/font/lucide.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/design-system.css">
+    <link rel="stylesheet" href="/static/css/components/sidebar.css">
+    <link rel="stylesheet" href="/static/css/components/header.css">
+    <link rel="stylesheet" href="/static/css/components/modal.css">
+    <link rel="stylesheet" href="/static/css/pages/finance-portal.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon"><i class="icon-landmark"></i></span>
+                    <span class="logo-text">ClassMate</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <i class="icon-panel-left-close"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/finance-portal" class="nav-item active" data-section="dashboard">
+                    <i class="icon-layout-dashboard"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="fee-structures">
+                    <i class="icon-layers"></i>
+                    <span class="nav-text">Fee Structures</span>
+                </a>
+                <a href="#" class="nav-item" data-section="students">
+                    <i class="icon-users"></i>
+                    <span class="nav-text">Student Accounts</span>
+                </a>
+                <a href="#" class="nav-item" data-section="payments">
+                    <i class="icon-credit-card"></i>
+                    <span class="nav-text">Payments</span>
+                </a>
+                <a href="#" class="nav-item" data-section="invoices">
+                    <i class="icon-file-text"></i>
+                    <span class="nav-text">Invoices</span>
+                </a>
+                <a href="#" class="nav-item" data-section="receipts">
+                    <i class="icon-receipt"></i>
+                    <span class="nav-text">Receipts</span>
+                </a>
+                <a href="#" class="nav-item" data-section="expenses">
+                    <i class="icon-trending-down"></i>
+                    <span class="nav-text">Expenses</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reports">
+                    <i class="icon-bar-chart-2"></i>
+                    <span class="nav-text">Reports</span>
+                </a>
+                <a href="#" class="nav-item" data-section="notifications">
+                    <i class="icon-bell"></i>
+                    <span class="nav-text">Notifications</span>
+                </a>
+                <a href="#" class="nav-item" data-section="settings">
+                    <i class="icon-settings"></i>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/login" class="nav-item" id="logoutBtn">
+                    <i class="icon-log-out"></i>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <h1 class="page-title" id="pageTitle">Financial Dashboard</h1>
+                    <p class="page-subtitle" id="pageSubtitle">Real-time financial overview and insights</p>
+                </div>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="btn btn-outline" id="btnQuickPayment">
+                            <i class="icon-plus"></i> Record Payment
+                        </button>
+                        <button class="btn btn-primary" id="btnCreateInvoice">
+                            <i class="icon-file-plus"></i> New Invoice
+                        </button>
+                    </div>
+                    <div class="user-profile">
+                        <div class="user-avatar">FO</div>
+                        <span class="user-name" id="userName">Finance Officer</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section class="content-section active" id="section-dashboard">
+                <!-- KPI Cards Row -->
+                <div class="kpi-grid">
+                    <div class="kpi-card kpi-primary">
+                        <div class="kpi-icon"><i class="icon-calendar"></i></div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">Collected Today</span>
+                            <span class="kpi-value" id="kpiToday">KES 0</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="icon-calendar-days"></i></div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">This Week</span>
+                            <span class="kpi-value" id="kpiWeek">KES 0</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="icon-calendar-range"></i></div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">This Month</span>
+                            <span class="kpi-value" id="kpiMonth">KES 0</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon"><i class="icon-calendar-check"></i></div>
+                        <div class="kpi-content">
+                            <span class="kpi-label">This Year</span>
+                            <span class="kpi-value" id="kpiYear">KES 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <span class="summary-title">Expected Revenue</span>
+                            <i class="icon-target"></i>
+                        </div>
+                        <span class="summary-value" id="summExpected">KES 0</span>
+                        <div class="summary-footer">
+                            <span class="summary-badge badge-info" id="summCollectionRate">0% collected</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <span class="summary-title">Outstanding Balance</span>
+                            <i class="icon-alert-triangle"></i>
+                        </div>
+                        <span class="summary-value summary-danger" id="summOutstanding">KES 0</span>
+                        <div class="summary-footer">
+                            <span class="summary-badge badge-warning" id="summOverdue">0 overdue invoices</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <span class="summary-title">Net Income</span>
+                            <i class="icon-trending-up"></i>
+                        </div>
+                        <span class="summary-value summary-success" id="summNetIncome">KES 0</span>
+                        <div class="summary-footer">
+                            <span class="summary-badge badge-neutral" id="summExpenses">Expenses: KES 0</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <span class="summary-title">Pending Invoices</span>
+                            <i class="icon-clock"></i>
+                        </div>
+                        <span class="summary-value" id="summPending">0</span>
+                        <div class="summary-footer">
+                            <span class="summary-badge badge-neutral" id="summTotal">Total: 0 invoices</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Monthly Revenue Trend</h3>
+                        </div>
+                        <canvas id="chartRevenue"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Outstanding by Class</h3>
+                        </div>
+                        <canvas id="chartOutstanding"></canvas>
+                    </div>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-card chart-small">
+                        <div class="chart-header">
+                            <h3>Payment Methods</h3>
+                        </div>
+                        <canvas id="chartMethods"></canvas>
+                    </div>
+                    <div class="chart-card chart-wide">
+                        <div class="chart-header">
+                            <h3>Recent Transactions</h3>
+                        </div>
+                        <div class="transactions-list" id="recentTransactions">
+                            <div class="loading-skeleton">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fee Structures Section -->
+            <section class="content-section" id="section-fee-structures">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Fee Structures</h2>
+                        <p class="text-muted">Manage fee structures by academic year, term, class, and category</p>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn btn-primary" id="btnNewFeeStructure">
+                            <i class="icon-plus"></i> New Fee Structure
+                        </button>
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="feeStructuresTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Year</th>
+                                <th>Term</th>
+                                <th>Total Amount</th>
+                                <th>Components</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feeStructuresBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Student Accounts Section -->
+            <section class="content-section" id="section-students">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Student Financial Accounts</h2>
+                        <p class="text-muted">Search and manage student financial profiles</p>
+                    </div>
+                    <div class="toolbar-right">
+                        <div class="search-box">
+                            <i class="icon-search"></i>
+                            <input type="text" id="studentSearch" placeholder="Search by name or admission no...">
+                        </div>
+                    </div>
+                </div>
+                <div class="student-accounts-grid" id="studentAccountsGrid">
+                    <div class="loading-skeleton">Loading student accounts...</div>
+                </div>
+                <!-- Student Financial Profile Modal content loads dynamically -->
+            </section>
+
+            <!-- Payments Section -->
+            <section class="content-section" id="section-payments">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Payments</h2>
+                        <p class="text-muted">All fee payments and transactions</p>
+                    </div>
+                    <div class="toolbar-right">
+                        <select id="filterPaymentMethod" class="form-select">
+                            <option value="">All Methods</option>
+                            <option value="cash">Cash</option>
+                            <option value="bank_transfer">Bank Transfer</option>
+                            <option value="cheque">Cheque</option>
+                            <option value="mobile_money">Mobile Money</option>
+                        </select>
+                        <button class="btn btn-primary" id="btnRecordPayment">
+                            <i class="icon-plus"></i> Record Payment
+                        </button>
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="paymentsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student</th>
+                                <th>Admission No</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentsBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="paymentsPagination"></div>
+            </section>
+
+            <!-- Invoices Section -->
+            <section class="content-section" id="section-invoices">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Invoices</h2>
+                        <p class="text-muted">Manage and track all student invoices</p>
+                    </div>
+                    <div class="toolbar-right">
+                        <select id="filterInvoiceStatus" class="form-select">
+                            <option value="">All Status</option>
+                            <option value="unpaid">Unpaid</option>
+                            <option value="partial">Partially Paid</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                        <button class="btn btn-outline" id="btnBulkInvoice">
+                            <i class="icon-users"></i> Bulk Invoice
+                        </button>
+                        <button class="btn btn-primary" id="btnNewInvoice">
+                            <i class="icon-plus"></i> New Invoice
+                        </button>
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="invoicesTable">
+                        <thead>
+                            <tr>
+                                <th>Invoice No</th>
+                                <th>Student</th>
+                                <th>Amount</th>
+                                <th>Balance</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoicesBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="invoicesPagination"></div>
+            </section>
+
+            <!-- Receipts Section -->
+            <section class="content-section" id="section-receipts">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Receipts</h2>
+                        <p class="text-muted">All generated payment receipts</p>
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="receiptsTable">
+                        <thead>
+                            <tr>
+                                <th>Receipt No</th>
+                                <th>Student</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receiptsBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="receiptsPagination"></div>
+            </section>
+
+            <!-- Expenses Section -->
+            <section class="content-section" id="section-expenses">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Expenses</h2>
+                        <p class="text-muted">Track school expenditure and outflows</p>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn btn-primary" id="btnRecordExpense">
+                            <i class="icon-plus"></i> Record Expense
+                        </button>
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="expensesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Vendor</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section class="content-section" id="section-reports">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Reports & Analytics</h2>
+                        <p class="text-muted">Generate financial reports and analytics</p>
+                    </div>
+                </div>
+                <div class="reports-grid">
+                    <div class="report-card" data-report="collection">
+                        <div class="report-icon"><i class="icon-bar-chart-2"></i></div>
+                        <h3>Collection Report</h3>
+                        <p>Daily, weekly, monthly collection analysis</p>
+                    </div>
+                    <div class="report-card" data-report="arrears">
+                        <div class="report-icon"><i class="icon-alert-triangle"></i></div>
+                        <h3>Arrears Report</h3>
+                        <p>Students with outstanding balances</p>
+                    </div>
+                    <div class="report-card" data-report="fully-paid">
+                        <div class="report-icon"><i class="icon-check-circle"></i></div>
+                        <h3>Fully Paid Students</h3>
+                        <p>Students with zero outstanding balance</p>
+                    </div>
+                    <div class="report-card" data-report="statement">
+                        <div class="report-icon"><i class="icon-file-text"></i></div>
+                        <h3>Student Statement</h3>
+                        <p>Individual student financial statement</p>
+                    </div>
+                </div>
+                <div class="report-output" id="reportOutput" style="display:none;">
+                    <div class="report-output-header">
+                        <h3 id="reportTitle">Report</h3>
+                        <button class="btn btn-outline btn-sm" id="btnExportReport">
+                            <i class="icon-download"></i> Export
+                        </button>
+                    </div>
+                    <div id="reportContent"></div>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section class="content-section" id="section-notifications">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Notifications</h2>
+                        <p class="text-muted">Communication history and fee reminders</p>
+                    </div>
+                    <div class="toolbar-right">
+                        <button class="btn btn-primary" id="btnSendReminder">
+                            <i class="icon-send"></i> Send Fee Reminder
+                        </button>
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table class="data-table" id="notificationsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student</th>
+                                <th>Type</th>
+                                <th>Subject</th>
+                                <th>Channel</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notificationsBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="content-section" id="section-settings">
+                <div class="section-toolbar">
+                    <div class="toolbar-left">
+                        <h2>Finance Settings</h2>
+                        <p class="text-muted">Configure financial management preferences</p>
+                    </div>
+                </div>
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h3>General Settings</h3>
+                        <form id="financeSettingsForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Currency</label>
+                                    <input type="text" id="settCurrency" class="form-input" value="KES">
+                                </div>
+                                <div class="form-group">
+                                    <label>Currency Symbol</label>
+                                    <input type="text" id="settCurrencySymbol" class="form-input" value="KES">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Receipt Prefix</label>
+                                    <input type="text" id="settReceiptPrefix" class="form-input" value="RCP">
+                                </div>
+                                <div class="form-group">
+                                    <label>Invoice Prefix</label>
+                                    <input type="text" id="settInvoicePrefix" class="form-input" value="INV">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Late Penalty Rate</label>
+                                    <input type="number" id="settPenaltyRate" class="form-input" value="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Grace Period (days)</label>
+                                    <input type="number" id="settGracePeriod" class="form-input" value="14">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>
+                                        <input type="checkbox" id="settAutoReminder"> Auto Fee Reminders
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reminder Days Before Due</label>
+                                    <input type="number" id="settReminderDays" class="form-input" value="7">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Receipt Footer Text</label>
+                                <textarea id="settReceiptFooter" class="form-input" rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Invoice Footer Text</label>
+                                <textarea id="settInvoiceFooter" class="form-input" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Fee Categories</h3>
+                        <div id="feeCategoriesList"></div>
+                        <button class="btn btn-outline btn-sm" id="btnAddCategory" style="margin-top:12px;">
+                            <i class="icon-plus"></i> Add Category
+                        </button>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Bank Accounts</h3>
+                        <div id="bankAccountsList"></div>
+                        <button class="btn btn-outline btn-sm" id="btnAddBankAccount" style="margin-top:12px;">
+                            <i class="icon-plus"></i> Add Bank Account
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Generic Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="genericModal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Modal</h2>
+                <button class="modal-close" id="modalClose"><i class="icon-x"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Print Frame -->
+    <iframe id="printFrame" style="display:none;"></iframe>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/pages/finance-portal.js"></script>
+</body>
+</html>

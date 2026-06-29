@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Teachers{% endblock %}
+{% block nav_teachers %}active{% endblock %}
+{% block page_title %}Teachers{% endblock %}
+{% block page_subtitle %}Manage faculty and staff{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-left">
+        <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+            <span id="teacherCount">86</span> teachers
+        </span>
+    </div>
+    <button class="btn btn-primary" id="addTeacherBtn">
+        <i class="icon-plus"></i>
+        Add Teacher
+    </button>
+</div>
+
+<div class="filters-bar">
+    <div class="table-search">
+        <i class="icon-search"></i>
+        <input type="text" placeholder="Search teachers..." id="searchInput">
+    </div>
+    <select class="table-filter" id="deptFilter">
+        <option value="">All Departments</option>
+        <option value="sciences">Sciences</option>
+        <option value="humanities">Humanities</option>
+        <option value="languages">Languages</option>
+        <option value="mathematics">Mathematics</option>
+    </select>
+</div>
+
+<div class="student-cards" id="teacherCards">
+    <div class="student-card animate-fade-in">
+        <div class="student-card-header">
+            <div class="student-card-avatar" style="background: rgba(59, 130, 246, 0.1); color: var(--color-info);">MK</div>
+            <div>
+                <div class="student-card-name">Mary Kariuki</div>
+                <div class="student-card-id">EMP/001</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Department</span>
+                <span class="student-detail-value">Sciences</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Subject</span>
+                <span class="student-detail-value">Biology</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Classes</span>
+                <span class="student-detail-value">4</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+    <div class="student-card animate-fade-in" style="animation-delay: 0.1s">
+        <div class="student-card-header">
+            <div class="student-card-avatar" style="background: rgba(59, 130, 246, 0.1); color: var(--color-info);">PO</div>
+            <div>
+                <div class="student-card-name">Peter Oloo</div>
+                <div class="student-card-id">EMP/002</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Department</span>
+                <span class="student-detail-value">Mathematics</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Subject</span>
+                <span class="student-detail-value">Mathematics</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Classes</span>
+                <span class="student-detail-value">5</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+    <div class="student-card animate-fade-in" style="animation-delay: 0.2s">
+        <div class="student-card-header">
+            <div class="student-card-avatar" style="background: rgba(59, 130, 246, 0.1); color: var(--color-info);">AN</div>
+            <div>
+                <div class="student-card-name">Agnes Njeri</div>
+                <div class="student-card-id">EMP/003</div>
+            </div>
+        </div>
+        <div class="student-card-details">
+            <div class="student-detail">
+                <span class="student-detail-label">Department</span>
+                <span class="student-detail-value">Languages</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Subject</span>
+                <span class="student-detail-value">English</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Classes</span>
+                <span class="student-detail-value">6</span>
+            </div>
+            <div class="student-detail">
+                <span class="student-detail-label">Status</span>
+                <span class="badge badge-success">Active</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pages/teachers.js') }}"></script>
+{% endblock %}

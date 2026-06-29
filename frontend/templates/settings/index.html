@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Settings{% endblock %}
+{% block nav_settings %}active{% endblock %}
+{% block page_title %}Settings{% endblock %}
+{% block page_subtitle %}Manage your account and school configuration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 240px 1fr; gap: 24px;">
+    <div class="card" style="height: fit-content;">
+        <nav style="display: flex; flex-direction: column; gap: 2px;">
+            <a href="#" class="settings-nav-item active" data-section="profile" style="font-size: var(--font-size-sm);">
+                <i class="icon-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="settings-nav-item" data-section="security" style="font-size: var(--font-size-sm);">
+                <i class="icon-lock"></i>
+                <span>Security</span>
+            </a>
+            <a href="#" class="settings-nav-item" data-section="school" id="schoolNavItem" style="font-size: var(--font-size-sm); display: none;">
+                <i class="icon-building"></i>
+                <span>School</span>
+            </a>
+        </nav>
+    </div>
+    <div>
+        <div class="settings-section active" id="section-profile">
+            <div class="card animate-fade-in">
+                <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: 24px;">Profile Settings</h3>
+                <form id="profileForm">
+                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 32px;">
+                        <div style="width: 80px; height: 80px; border-radius: var(--radius-full); background: var(--color-accent); color: white; display: flex; align-items: center; justify-content: center; font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold);" id="profileAvatar">A</div>
+                        <div>
+                            <button type="button" class="btn btn-outline btn-sm">Change Photo</button>
+                            <p style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-top: 6px;">JPG, PNG. Max 2MB</p>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" id="settingsFirstName" value="">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" id="settingsLastName" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="settingsEmail" value="" disabled style="background: var(--color-bg-secondary);">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" id="settingsPhone" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <input type="text" id="settingsRole" value="" disabled style="background: var(--color-bg-secondary);">
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-outline">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="settings-section" id="section-security">
+            <div class="card animate-fade-in">
+                <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: 24px;">Change Password</h3>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <input type="password" id="newPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required minlength="6">
+                    </div>
+                    <div id="passwordAlert" style="display:none; padding: 12px; border-radius: var(--radius-md); font-size: var(--font-size-sm); margin-bottom: 16px;"></div>
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="settings-section" id="section-school">
+            <div class="card animate-fade-in">
+                <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: 8px;">School Configuration</h3>
+                <p style="font-size: var(--font-size-sm); color: var(--color-text-tertiary); margin-bottom: 24px;">Configure school details that appear on all official documents, invoices, and receipts.</p>
+                <form id="schoolForm">
+                    <div class="form-group">
+                        <label class="form-label">School Name</label>
+                        <input type="text" id="schoolName" placeholder="Enter school name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">School Motto</label>
+                        <input type="text" id="schoolMotto" placeholder="Enter school motto">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Logo URL</label>
+                        <input type="text" id="schoolLogo" placeholder="URL to school logo image">
+                        <p style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-top: 4px;">Provide a direct URL to your school logo. Appears on printed documents.</p>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" id="schoolEmail" placeholder="school@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="schoolPhone" placeholder="+254 700 000 000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Physical Address</label>
+                        <textarea id="schoolAddress" rows="2" placeholder="P.O. Box 123, Nairobi, Kenya" style="width:100%;border:1px solid var(--color-border);border-radius:var(--radius-md);padding:10px 12px;font-family:var(--font-family);font-size:var(--font-size-sm);resize:vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Website</label>
+                        <input type="url" id="schoolWebsite" placeholder="https://www.school.ac.ke">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Academic Year</label>
+                            <input type="text" id="schoolYear" placeholder="2025">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Term</label>
+                            <select id="schoolTerm" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:var(--radius-md);padding:0 12px;font-family:var(--font-family);font-size:var(--font-size-sm);">
+                                <option value="Term 1">Term 1</option>
+                                <option value="Term 2">Term 2</option>
+                                <option value="Term 3">Term 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="schoolAlert" style="display:none; padding: 12px; border-radius: var(--radius-md); font-size: var(--font-size-sm); margin-top: 16px;"></div>
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary">Save School Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pages/settings.js') }}"></script>
+{% endblock %}

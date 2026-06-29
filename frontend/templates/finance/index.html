@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Finance{% endblock %}
+{% block nav_finance %}active{% endblock %}
+{% block page_title %}Finance{% endblock %}
+{% block page_subtitle %}Fee management, payments and reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="stat-card accent animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="icon-wallet"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalCollected">KES 0</div>
+        <div class="stat-card-label">Total Collected</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="icon-clock"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalOutstanding">KES 0</div>
+        <div class="stat-card-label">Outstanding Balance</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="icon-check-circle"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalPayments">0</div>
+        <div class="stat-card-label">Payments Recorded</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="icon-file-text"></i></div>
+        </div>
+        <div class="stat-card-value" id="totalInvoices">0</div>
+        <div class="stat-card-label">Invoices Issued</div>
+    </div>
+</div>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Recent Transactions</h3>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <button class="btn btn-outline" id="exportBtn">
+            <i class="icon-download"></i>
+            Export
+        </button>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Reference</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="transactionsBody">
+            <tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--color-text-tertiary);">Loading transactions...</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!auth.requireAuth()) return;
+
+    try {
+        const stats = await api.get('/finance/stats');
+        document.getElementById('totalCollected').textContent = 'KES ' + Number(stats.total_collected).toLocaleString();
+        document.getElementById('totalOutstanding').textContent = 'KES ' + Number(stats.total_outstanding || 0).toLocaleString();
+        document.getElementById('totalPayments').textContent = stats.total_payments;
+        document.getElementById('totalInvoices').textContent = stats.total_invoices || 0;
+    } catch (e) {
+        console.error('Failed to load finance stats:', e);
+    }
+
+    try {
+        const data = await api.get('/finance/payments?per_page=10');
+        const tbody = document.getElementById('transactionsBody');
+        if (data.payments && data.payments.length > 0) {
+            tbody.innerHTML = data.payments.map(p => `
+                <tr>
+                    <td><div class="user-cell"><div class="user-cell-avatar">${(p.student_name || 'NA').split(' ').map(w=>w[0]).join('')}</div><div class="user-cell-info"><span class="user-cell-name">${p.student_name || 'Unknown'}</span><span class="user-cell-email">${p.admission_number || ''}</span></div></div></td>
+                    <td><strong>KES ${Number(p.amount_paid).toLocaleString()}</strong></td>
+                    <td><span class="badge badge-success">${p.payment_method || 'N/A'}</span></td>
+                    <td>${p.transaction_id || 'N/A'}</td>
+                    <td>${p.payment_date ? new Date(p.payment_date).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : 'N/A'}</td>
+                    <td><span class="badge badge-success">${p.status}</span></td>
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--color-text-tertiary);">No transactions yet</td></tr>';
+        }
+    } catch (e) {
+        console.error('Failed to load transactions:', e);
+    }
+});
+</script>
+{% endblock %}

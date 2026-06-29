@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Academics{% endblock %}
+{% block nav_academics %}active{% endblock %}
+{% block page_title %}Academics{% endblock %}
+{% block page_subtitle %}Classes, subjects, timetables and assignments{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-header-left">
+        <div class="chart-tabs">
+            <button class="chart-tab active" data-tab="classes">Classes</button>
+            <button class="chart-tab" data-tab="subjects">Subjects</button>
+            <button class="chart-tab" data-tab="assignments">Assignments</button>
+            <button class="chart-tab" data-tab="timetable">Timetable</button>
+        </div>
+    </div>
+    <button class="btn btn-primary" id="addClassBtn">
+        <i class="icon-plus"></i>
+        Add Class
+    </button>
+</div>
+
+<div id="classesTab">
+    <div class="student-cards">
+        <div class="student-card animate-fade-in">
+            <div class="student-card-header">
+                <div class="student-card-avatar" style="background: rgba(230, 57, 70, 0.08); color: var(--color-accent);">F1</div>
+                <div>
+                    <div class="student-card-name">Form 1</div>
+                    <div class="student-card-id">4 Streams - 160 Students</div>
+                </div>
+            </div>
+            <div class="student-card-details">
+                <div class="student-detail">
+                    <span class="student-detail-label">Class Teacher</span>
+                    <span class="student-detail-value">Mr. Oloo</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Avg Performance</span>
+                    <span class="student-detail-value">B+</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Attendance</span>
+                    <span class="student-detail-value">93%</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Capacity</span>
+                    <span class="student-detail-value">160/200</span>
+                </div>
+            </div>
+        </div>
+        <div class="student-card animate-fade-in" style="animation-delay: 0.1s">
+            <div class="student-card-header">
+                <div class="student-card-avatar" style="background: rgba(16, 185, 129, 0.08); color: var(--color-success);">F2</div>
+                <div>
+                    <div class="student-card-name">Form 2</div>
+                    <div class="student-card-id">4 Streams - 155 Students</div>
+                </div>
+            </div>
+            <div class="student-card-details">
+                <div class="student-detail">
+                    <span class="student-detail-label">Class Teacher</span>
+                    <span class="student-detail-value">Mrs. Kariuki</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Avg Performance</span>
+                    <span class="student-detail-value">B</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Attendance</span>
+                    <span class="student-detail-value">91%</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Capacity</span>
+                    <span class="student-detail-value">155/200</span>
+                </div>
+            </div>
+        </div>
+        <div class="student-card animate-fade-in" style="animation-delay: 0.2s">
+            <div class="student-card-header">
+                <div class="student-card-avatar" style="background: rgba(59, 130, 246, 0.08); color: var(--color-info);">F3</div>
+                <div>
+                    <div class="student-card-name">Form 3</div>
+                    <div class="student-card-id">4 Streams - 148 Students</div>
+                </div>
+            </div>
+            <div class="student-card-details">
+                <div class="student-detail">
+                    <span class="student-detail-label">Class Teacher</span>
+                    <span class="student-detail-value">Ms. Njeri</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Avg Performance</span>
+                    <span class="student-detail-value">B+</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Attendance</span>
+                    <span class="student-detail-value">94%</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Capacity</span>
+                    <span class="student-detail-value">148/200</span>
+                </div>
+            </div>
+        </div>
+        <div class="student-card animate-fade-in" style="animation-delay: 0.3s">
+            <div class="student-card-header">
+                <div class="student-card-avatar" style="background: rgba(245, 158, 11, 0.08); color: var(--color-warning);">F4</div>
+                <div>
+                    <div class="student-card-name">Form 4</div>
+                    <div class="student-card-id">4 Streams - 142 Students</div>
+                </div>
+            </div>
+            <div class="student-card-details">
+                <div class="student-detail">
+                    <span class="student-detail-label">Class Teacher</span>
+                    <span class="student-detail-value">Mr. Waweru</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Avg Performance</span>
+                    <span class="student-detail-value">A-</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Attendance</span>
+                    <span class="student-detail-value">97%</span>
+                </div>
+                <div class="student-detail">
+                    <span class="student-detail-label">Capacity</span>
+                    <span class="student-detail-value">142/200</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (!auth.requireAuth()) return;
+
+    const tabs = document.querySelectorAll('.chart-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+        });
+    });
+});
+</script>
+{% endblock %}

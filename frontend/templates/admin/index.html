@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}ClassMate - Administration{% endblock %}
+{% block page_title %}Administration{% endblock %}
+{% block page_subtitle %}System management and oversight{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages/students.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <div class="stat-card accent animate-fade-in">
+        <div class="stat-card-header">
+            <div class="stat-card-icon accent"><i class="icon-users"></i></div>
+        </div>
+        <div class="stat-card-value">1,333</div>
+        <div class="stat-card-label">Total Users</div>
+    </div>
+    <div class="stat-card success animate-fade-in" style="animation-delay: 0.1s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon success"><i class="icon-shield-check"></i></div>
+        </div>
+        <div class="stat-card-value">99.9%</div>
+        <div class="stat-card-label">System Uptime</div>
+    </div>
+    <div class="stat-card info animate-fade-in" style="animation-delay: 0.2s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon info"><i class="icon-file-text"></i></div>
+        </div>
+        <div class="stat-card-value">847</div>
+        <div class="stat-card-label">Documents Stored</div>
+    </div>
+    <div class="stat-card warning animate-fade-in" style="animation-delay: 0.3s">
+        <div class="stat-card-header">
+            <div class="stat-card-icon warning"><i class="icon-alert-triangle"></i></div>
+        </div>
+        <div class="stat-card-value">3</div>
+        <div class="stat-card-label">Pending Actions</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div class="data-card animate-fade-in" style="animation-delay: 0.4s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">System Management</h3>
+        </div>
+        <div class="quick-actions" style="padding: 20px 24px;">
+            <button class="quick-action-btn" onclick="window.location.href='/students'">
+                <i class="icon-user-plus"></i>
+                <span>Admissions</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="icon-building"></i>
+                <span>School Config</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="icon-shield"></i>
+                <span>Permissions</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="icon-database"></i>
+                <span>Backup Data</span>
+            </button>
+            <button class="quick-action-btn" onclick="window.location.href='/finance'">
+                <i class="icon-bar-chart-3"></i>
+                <span>Reports</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="icon-file-clock"></i>
+                <span>Audit Logs</span>
+            </button>
+        </div>
+    </div>
+    <div class="data-card animate-fade-in" style="animation-delay: 0.5s">
+        <div class="data-card-header">
+            <h3 class="data-card-title">Recent Audit Log</h3>
+        </div>
+        <div class="data-card-body">
+            <div class="activity-item">
+                <div class="activity-dot red"></div>
+                <div>
+                    <div class="activity-text">Admin added new student - Grace Wanjiku</div>
+                    <div class="activity-time">2 minutes ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot blue"></div>
+                <div>
+                    <div class="activity-text">Fee structure updated for Term 2</div>
+                    <div class="activity-time">1 hour ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot green"></div>
+                <div>
+                    <div class="activity-text">Teacher account activated - John Mutua</div>
+                    <div class="activity-time">3 hours ago</div>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-dot yellow"></div>
+                <div>
+                    <div class="activity-text">System backup completed successfully</div>
+                    <div class="activity-time">6 hours ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => { if (!auth.requireRole(['admin'])) return; });
+</script>
+{% endblock %}

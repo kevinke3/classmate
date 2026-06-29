@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassMate - Deputy Headteacher Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/font/lucide.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/design-system.css">
+    <link rel="stylesheet" href="/static/css/components/sidebar.css">
+    <link rel="stylesheet" href="/static/css/components/header.css">
+    <link rel="stylesheet" href="/static/css/components/modal.css">
+    <link rel="stylesheet" href="/static/css/pages/portal-shared.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon"><i class="icon-shield"></i></span>
+                    <span class="logo-text">ClassMate</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <i class="icon-panel-left-close"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="icon-layout-dashboard"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="students">
+                    <i class="icon-users"></i>
+                    <span class="nav-text">Student Management</span>
+                </a>
+                <a href="#" class="nav-item" data-section="discipline">
+                    <i class="icon-alert-triangle"></i>
+                    <span class="nav-text">Discipline</span>
+                </a>
+                <a href="#" class="nav-item" data-section="staff">
+                    <i class="icon-briefcase"></i>
+                    <span class="nav-text">Staff Supervision</span>
+                </a>
+                <a href="#" class="nav-item" data-section="allocations">
+                    <i class="icon-git-branch"></i>
+                    <span class="nav-text">Class Allocation</span>
+                </a>
+                <a href="#" class="nav-item" data-section="attendance">
+                    <i class="icon-calendar-check"></i>
+                    <span class="nav-text">Attendance</span>
+                </a>
+                <a href="#" class="nav-item" data-section="leaves">
+                    <i class="icon-calendar-off"></i>
+                    <span class="nav-text">Leave Requests</span>
+                </a>
+                <a href="#" class="nav-item" data-section="welfare">
+                    <i class="icon-heart"></i>
+                    <span class="nav-text">Student Welfare</span>
+                </a>
+                <a href="#" class="nav-item" data-section="duties">
+                    <i class="icon-clipboard-list"></i>
+                    <span class="nav-text">Duty Roster</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reports">
+                    <i class="icon-bar-chart-2"></i>
+                    <span class="nav-text">Reports</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="/login" class="nav-item" id="logoutBtn">
+                    <i class="icon-log-out"></i>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Operations Dashboard</h1>
+                    <p id="pageSubtitle">School operational management center</p>
+                </div>
+                <div class="header-right">
+                    <span class="role-badge deputy">Deputy Headteacher</span>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Dashboard Section -->
+                <section id="section-dashboard" class="content-section active">
+                    <div class="kpi-grid">
+                        <div class="kpi-card info">
+                            <div class="kpi-icon"><i class="icon-users"></i></div>
+                            <div class="kpi-value" id="kpiStudents">0</div>
+                            <div class="kpi-label">Total Students</div>
+                        </div>
+                        <div class="kpi-card success">
+                            <div class="kpi-icon"><i class="icon-briefcase"></i></div>
+                            <div class="kpi-value" id="kpiTeachers">0</div>
+                            <div class="kpi-label">Total Teachers</div>
+                        </div>
+                        <div class="kpi-card warning">
+                            <div class="kpi-icon"><i class="icon-alert-triangle"></i></div>
+                            <div class="kpi-value" id="kpiDiscipline">0</div>
+                            <div class="kpi-label">Open Cases</div>
+                        </div>
+                        <div class="kpi-card accent">
+                            <div class="kpi-icon"><i class="icon-calendar-off"></i></div>
+                            <div class="kpi-value" id="kpiLeaves">0</div>
+                            <div class="kpi-label">Pending Leaves</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div class="summary-label">Student Attendance</div>
+                            <div class="summary-value" id="summStudentAtt">0%</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Teacher Attendance</div>
+                            <div class="summary-value" id="summTeacherAtt">0%</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Welfare Cases</div>
+                            <div class="summary-value" id="summWelfare">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Total Classes</div>
+                            <div class="summary-value" id="summClasses">0</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Discipline by Category</h3>
+                            <canvas id="chartDiscipline"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Students by Class</h3>
+                            <canvas id="chartEnrollment"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="lists-grid">
+                        <div class="list-container">
+                            <h3>Recent Discipline Cases</h3>
+                            <div id="recentDiscipline" class="activity-list"></div>
+                        </div>
+                        <div class="list-container">
+                            <h3>Recent Leave Requests</h3>
+                            <div id="recentLeaves" class="activity-list"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Students Section -->
+                <section id="section-students" class="content-section">
+                    <div class="section-toolbar">
+                        <input type="text" id="studentSearch" class="search-input" placeholder="Search students...">
+                        <select id="studentClassFilter" class="filter-select">
+                            <option value="">All Classes</option>
+                        </select>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table" id="studentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Admission No.</th>
+                                    <th>Class</th>
+                                    <th>Gender</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Discipline Section -->
+                <section id="section-discipline" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showDisciplineModal()">
+                            <i class="icon-plus"></i> Record Incident
+                        </button>
+                        <select id="disciplineFilter" class="filter-select" onchange="loadDiscipline()">
+                            <option value="">All Status</option>
+                            <option value="open">Open</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Student</th>
+                                    <th>Category</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="disciplineBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Staff Section -->
+                <section id="section-staff" class="content-section">
+                    <div class="section-toolbar">
+                        <input type="text" id="staffSearch" class="search-input" placeholder="Search staff...">
+                    </div>
+                    <div class="cards-grid" id="staffGrid"></div>
+                </section>
+
+                <!-- Allocations Section -->
+                <section id="section-allocations" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showAllocationModal()">
+                            <i class="icon-plus"></i> New Allocation
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Class</th>
+                                    <th>Stream</th>
+                                    <th>Year</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allocationsBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Attendance Section -->
+                <section id="section-attendance" class="content-section">
+                    <div class="section-toolbar">
+                        <input type="date" id="attDate" class="filter-select" onchange="loadTeacherAttendance()">
+                        <button class="btn btn-primary" onclick="showAttendanceModal()">
+                            <i class="icon-check-circle"></i> Mark Attendance
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Employee ID</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacherAttBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Leaves Section -->
+                <section id="section-leaves" class="content-section">
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Type</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leavesBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Welfare Section -->
+                <section id="section-welfare" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showWelfareModal()">
+                            <i class="icon-plus"></i> New Record
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Category</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="welfareBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Duties Section -->
+                <section id="section-duties" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showDutyModal()">
+                            <i class="icon-plus"></i> Assign Duty
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Teacher</th>
+                                    <th>Duty</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dutiesBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Reports Section -->
+                <section id="section-reports" class="content-section">
+                    <div class="report-cards-grid">
+                        <div class="report-card" onclick="loadReport('discipline')">
+                            <i class="icon-alert-triangle"></i>
+                            <h4>Discipline Report</h4>
+                            <p>Cases by category and severity</p>
+                        </div>
+                        <div class="report-card" onclick="loadReport('attendance')">
+                            <i class="icon-calendar-check"></i>
+                            <h4>Attendance Report</h4>
+                            <p>Student and teacher attendance</p>
+                        </div>
+                    </div>
+                    <div id="reportOutput" class="report-output" style="display:none">
+                        <h3 id="reportTitle"></h3>
+                        <div id="reportContent"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="mainModal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Form</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/utils/auth.js"></script>
+    <script src="/static/js/utils/api.js"></script>
+    <script src="/static/js/pages/deputy-portal.js"></script>
+</body>
+</html>

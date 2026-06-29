@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ClassMate{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/font/lucide.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/design-system.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components/tables.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="logo-icon">C</span>
+                    <span class="logo-text">ClassMate</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="icon-panel-left-close"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item {% block nav_dashboard %}{% endblock %}">
+                    <i class="icon-layout-dashboard"></i>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="/students" class="nav-item {% block nav_students %}{% endblock %}">
+                    <i class="icon-graduation-cap"></i>
+                    <span class="nav-label">Students</span>
+                </a>
+                <a href="/teachers" class="nav-item {% block nav_teachers %}{% endblock %}">
+                    <i class="icon-users"></i>
+                    <span class="nav-label">Teachers</span>
+                </a>
+                <a href="/academics" class="nav-item {% block nav_academics %}{% endblock %}">
+                    <i class="icon-book-open"></i>
+                    <span class="nav-label">Academics</span>
+                </a>
+                <a href="/finance" class="nav-item {% block nav_finance %}{% endblock %}">
+                    <i class="icon-wallet"></i>
+                    <span class="nav-label">Finance</span>
+                </a>
+                <a href="/attendance" class="nav-item {% block nav_attendance %}{% endblock %}">
+                    <i class="icon-calendar-check"></i>
+                    <span class="nav-label">Attendance</span>
+                </a>
+                <a href="/messages" class="nav-item {% block nav_messages %}{% endblock %}">
+                    <i class="icon-message-square"></i>
+                    <span class="nav-label">Messages</span>
+                </a>
+                <a href="/settings" class="nav-item {% block nav_settings %}{% endblock %}">
+                    <i class="icon-settings"></i>
+                    <span class="nav-label">Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Admin User</span>
+                        <span class="user-role" id="userRole">Administrator</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="icon-log-out"></i>
+                    <span class="nav-label">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="icon-menu"></i>
+                    </button>
+                    <div class="page-title">
+                        <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                        <p class="page-subtitle">{% block page_subtitle %}{% endblock %}</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="icon-search"></i>
+                        <input type="text" placeholder="Search..." class="search-input">
+                    </div>
+                    <button class="header-btn notification-btn" id="notificationBtn">
+                        <i class="icon-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notification-panel" id="notificationPanel">
+                        <div class="notification-panel-header">
+                            <h3>Notifications</h3>
+                            <button class="mark-all-read">Mark all read</button>
+                        </div>
+                        <div class="notification-list" id="notificationList">
+                            <div class="notification-skeleton"></div>
+                            <div class="notification-skeleton"></div>
+                            <div class="notification-skeleton"></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <script src="{{ url_for('static', filename='js/utils/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/utils/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/components/notifications.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
