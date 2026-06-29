@@ -41,6 +41,14 @@ def create_app(config_name='default'):
     from backend.app.analytics.routes import analytics_bp
     from backend.app.settings.routes import settings_bp
     from backend.app.documents.routes import documents_bp
+    from backend.app.deputy.routes import deputy_bp
+    import backend.app.deputy.models  # noqa: F401
+    from backend.app.senior_teacher.routes import senior_teacher_bp
+    import backend.app.senior_teacher.models  # noqa: F401
+    from backend.app.hos.routes import hos_bp
+    import backend.app.hos.models  # noqa: F401
+    from backend.app.class_teacher.routes import ct_bp
+    import backend.app.class_teacher.models  # noqa: F401
     from backend.app.main import main_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -56,6 +64,10 @@ def create_app(config_name='default'):
     app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
     app.register_blueprint(settings_bp, url_prefix='/api/settings')
     app.register_blueprint(documents_bp, url_prefix='/api/documents')
+    app.register_blueprint(deputy_bp, url_prefix='/api/deputy')
+    app.register_blueprint(senior_teacher_bp, url_prefix='/api/senior-teacher')
+    app.register_blueprint(hos_bp, url_prefix='/api/hos')
+    app.register_blueprint(ct_bp, url_prefix='/api/class-teacher')
     app.register_blueprint(main_bp)
 
     return app

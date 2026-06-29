@@ -34,9 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('user', JSON.stringify(response.user));
 
                     const role = response.user.role;
+                    const teacherRole = response.user.teacher_role;
+                    const teacherRedirects = {
+                        'deputy': '/deputy-portal',
+                        'senior_teacher': '/senior-teacher-portal',
+                        'head_of_studies': '/hos-portal',
+                        'class_teacher': '/class-teacher-portal',
+                    };
                     const redirectMap = {
                         'admin': '/dashboard',
-                        'teacher': '/teacher-portal',
+                        'teacher': teacherRedirects[teacherRole] || '/teacher-portal',
                         'parent': '/parent-portal',
                         'finance': '/finance-portal'
                     };

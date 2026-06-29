@@ -11,6 +11,15 @@ from backend.app.finance.models import (
     FeeCategory, FeeComponent, ExpenseCategory, Expense,
     Income, FinanceSettings, BankAccount, FinanceNotification
 )
+from backend.app.deputy.models import (
+    DisciplineRecord, LeaveRequest, ClassTeacherAllocation,
+    DutyRoster, TeacherAttendance, WelfareRecord
+)
+from backend.app.senior_teacher.models import (
+    LessonPlan, SchemeOfWork, ClassroomObservation, SyllabusCoverage
+)
+from backend.app.hos.models import AcademicTarget, AcademicIntervention
+from backend.app.class_teacher.models import BehaviorRecord, CounselingNote
 
 
 def seed():
@@ -62,7 +71,14 @@ def seed():
                 teacher_role=t_role
             )
             db.session.add(teacher)
-            teachers.append(teacher)
+            teachers.append((user, teacher))
+
+        # Unpack teacher references for portal seed data
+        mary_user, mary_teacher = teachers[0]
+        peter_user, peter_teacher = teachers[1]
+        agnes_user, agnes_teacher = teachers[2]
+        john_user, john_teacher = teachers[3]
+        sarah_user, sarah_teacher = teachers[4]
 
         # Classes
         classes = []
@@ -168,10 +184,10 @@ def seed():
         # Assign class teachers to classes
         db.session.flush()
         # Mary (class_teacher) -> Form 1, Sarah (class_teacher) -> Form 2
-        ct1 = ClassTeacher(teacher_id=teachers[0].id, class_id=classes[0].id, is_class_teacher=True)
-        ct2 = ClassTeacher(teacher_id=teachers[4].id, class_id=classes[1].id, is_class_teacher=True)
+        ct1 = ClassTeacher(teacher_id=mary_teacher.id, class_id=classes[0].id, is_class_teacher=True)
+        ct2 = ClassTeacher(teacher_id=sarah_teacher.id, class_id=classes[1].id, is_class_teacher=True)
         # Deputy John also assigned to Form 3 as class teacher
-        ct3 = ClassTeacher(teacher_id=teachers[3].id, class_id=classes[2].id, is_class_teacher=True)
+        ct3 = ClassTeacher(teacher_id=john_teacher.id, class_id=classes[2].id, is_class_teacher=True)
         db.session.add_all([ct1, ct2, ct3])
 
         db.session.flush()
@@ -319,6 +335,7 @@ def seed():
         ]
         for name, code, desc in exp_categories:
             db.session.add(ExpenseCategory(name=name, code=code, description=desc))
+        db.session.flush()
 
         # Bank Account
         bank = BankAccount(
@@ -360,6 +377,193 @@ def seed():
             recorded_by=finance_user.id
         )
         db.session.add(inc)
+
+        # Deputy Portal: Discipline records
+        students_all = Student.query.all()
+        for i, (cat, sev, desc) in enumerate([
+            ('Misconduct', 'minor', 'Talking during assembly'),
+            ('Truancy', 'major', 'Absent from afternoon classes without permission'),
+            ('Fighting', 'critical', 'Physical altercation in the dining hall'),
+            ('Insubordination', 'minor', 'Refused to follow teacher instructions'),
+        ]):
+            dr = DisciplineRecord(
+                student_id=students_all[i % len(students_all)].id,
+                reported_by=john_user.id,
+                incident_date=date.today() - timedelta(days=i * 3),
+                category=cat, severity=sev, description=desc,
+                status='open' if i < 3 else 'resolved',
+                action_taken='Verbal warning' if sev == 'minor' else 'Written warning',
+            )
+            db.session.add(dr)
+
+        # Deputy: Leave requests
+        for t, lt in [(mary_teacher, 'Sick Leave'), (peter_teacher, 'Personal Leave')]:
+            lr = LeaveRequest(
+                teacher_id=t.id,
+                leave_type=lt,
+                start_date=date.today() + timedelta(days=5),
+                end_date=date.today() + timedelta(days=7),
+                reason=f'{lt} due to personal reasons',
+                status='pending',
+            )
+            db.session.add(lr)
+
+        # Deputy: Class Teacher Allocations
+        for t, cls in [(mary_teacher, classes[0]), (sarah_teacher, classes[1])]:
+            cta = ClassTeacherAllocation(
+                teacher_id=t.id,
+                class_id=cls.id,
+                academic_year=str(date.today().year),
+                allocated_by=john_user.id,
+                is_active=True,
+            )
+            db.session.add(cta)
+
+        # Deputy: Teacher Attendance
+        for t in [mary_teacher, peter_teacher, agnes_teacher, sarah_teacher]:
+            ta = TeacherAttendance(
+                teacher_id=t.id,
+                date=date.today(),
+                status='present',
+                recorded_by=john_user.id,
+            )
+            db.session.add(ta)
+
+        # Deputy: Welfare records
+        wr = WelfareRecord(
+            student_id=students_all[0].id,
+            reported_by=mary_user.id,
+            category='Health',
+            description='Student has recurring headaches, needs medical check.',
+            priority='medium',
+            status='open',
+        )
+        db.session.add(wr)
+
+        # Deputy: Duty Roster
+        duty = DutyRoster(
+            teacher_id=agnes_teacher.id,
+            duty_type='Morning Assembly',
+            duty_date=date.today(),
+            start_time='07:00',
+            end_time='07:30',
+            location='Assembly Ground',
+            created_by=john_user.id,
+        )
+        db.session.add(duty)
+
+        # Senior Teacher: Lesson Plans
+        subjects_all = Subject.query.all()
+        for i, topic in enumerate(['Introduction to Algebra', 'The Water Cycle', 'Parts of Speech']):
+            lp = LessonPlan(
+                teacher_id=[mary_teacher, peter_teacher, agnes_teacher][i % 3].id,
+                subject_id=subjects_all[i % len(subjects_all)].id,
+                class_id=classes[0].id,
+                topic=topic,
+                objectives='Students will understand ' + topic.lower(),
+                lesson_date=date.today() - timedelta(days=i),
+                status='completed' if i == 0 else 'planned',
+            )
+            db.session.add(lp)
+
+        # Senior Teacher: Schemes of Work
+        sw = SchemeOfWork(
+            teacher_id=mary_teacher.id,
+            subject_id=subjects_all[0].id,
+            class_id=classes[0].id,
+            term='Term 1',
+            academic_year=str(date.today().year),
+            week_number=1,
+            topic='Number Systems',
+            objectives='Understand real numbers',
+            status='completed',
+        )
+        db.session.add(sw)
+
+        # Senior Teacher: Observations
+        obs = ClassroomObservation(
+            teacher_id=mary_teacher.id,
+            observer_id=agnes_user.id,
+            observation_date=date.today() - timedelta(days=2),
+            lesson_delivery=4,
+            student_engagement=5,
+            classroom_management=4,
+            content_knowledge=5,
+            overall_rating=4,
+            strengths='Excellent student engagement, clear explanations',
+            areas_for_improvement='More group activities',
+        )
+        db.session.add(obs)
+
+        # Senior Teacher: Syllabus Coverage
+        for i, (t, s, pct) in enumerate([
+            (mary_teacher, subjects_all[0], 72),
+            (peter_teacher, subjects_all[1] if len(subjects_all) > 1 else subjects_all[0], 55),
+        ]):
+            sc = SyllabusCoverage(
+                teacher_id=t.id,
+                subject_id=s.id,
+                class_id=classes[0].id,
+                total_topics=20,
+                covered_topics=int(20 * pct / 100),
+                percentage=pct,
+                term='Term 1',
+                academic_year=str(date.today().year),
+            )
+            db.session.add(sc)
+
+        # HoS: Academic Targets
+        at = AcademicTarget(
+            class_id=classes[0].id,
+            academic_year=str(date.today().year),
+            term='Term 1',
+            target_mean=65.0,
+            target_pass_rate=80.0,
+            set_by=peter_user.id,
+        )
+        db.session.add(at)
+
+        # HoS: Interventions
+        ai = AcademicIntervention(
+            student_id=students_all[0].id,
+            subject_id=subjects_all[0].id if subjects_all else None,
+            intervention_type='Remedial Classes',
+            description='Weekly remedial sessions for Mathematics improvement',
+            current_score=35.0,
+            target_score=50.0,
+            created_by=peter_user.id,
+            status='active',
+        )
+        db.session.add(ai)
+
+        # Class Teacher: Behavior Records
+        for bt, cat, desc, pts in [
+            ('positive', 'Leadership', 'Led class discussion effectively', 5),
+            ('negative', 'Conduct', 'Disrupted class during lesson', -3),
+        ]:
+            br = BehaviorRecord(
+                student_id=students_all[0].id,
+                recorded_by=mary_user.id,
+                behavior_type=bt,
+                category=cat,
+                description=desc,
+                points=pts,
+                date=date.today() - timedelta(days=1),
+            )
+            db.session.add(br)
+
+        # Class Teacher: Counseling Notes
+        cn = CounselingNote(
+            student_id=students_all[0].id,
+            counselor_id=mary_user.id,
+            session_date=date.today() - timedelta(days=3),
+            category='Academic',
+            summary='Discussion about improving study habits.',
+            recommendations='Create a study schedule, reduce screen time.',
+            follow_up_date=date.today() + timedelta(days=14),
+            status='active',
+        )
+        db.session.add(cn)
 
         db.session.commit()
         print('Database seeded successfully!')

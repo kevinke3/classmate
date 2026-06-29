@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassMate - Head of Studies Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide-static@0.460.0/font/lucide.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/design-system.css">
+    <link rel="stylesheet" href="/static/css/components/sidebar.css">
+    <link rel="stylesheet" href="/static/css/components/header.css">
+    <link rel="stylesheet" href="/static/css/components/modal.css">
+    <link rel="stylesheet" href="/static/css/pages/portal-shared.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon"><i class="icon-graduation-cap"></i></span>
+                    <span class="logo-text">ClassMate</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                    <i class="icon-panel-left-close"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <i class="icon-layout-dashboard"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-section="examinations">
+                    <i class="icon-file-check"></i>
+                    <span class="nav-text">Examinations</span>
+                </a>
+                <a href="#" class="nav-item" data-section="results">
+                    <i class="icon-trophy"></i>
+                    <span class="nav-text">Results & Rankings</span>
+                </a>
+                <a href="#" class="nav-item" data-section="targets">
+                    <i class="icon-target"></i>
+                    <span class="nav-text">Academic Targets</span>
+                </a>
+                <a href="#" class="nav-item" data-section="interventions">
+                    <i class="icon-life-buoy"></i>
+                    <span class="nav-text">Interventions</span>
+                </a>
+                <a href="#" class="nav-item" data-section="curriculum">
+                    <i class="icon-book"></i>
+                    <span class="nav-text">Curriculum</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reports">
+                    <i class="icon-bar-chart-2"></i>
+                    <span class="nav-text">Reports</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="/login" class="nav-item" id="logoutBtn">
+                    <i class="icon-log-out"></i>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Academic Dashboard</h1>
+                    <p id="pageSubtitle">Academic management and performance monitoring</p>
+                </div>
+                <div class="header-right">
+                    <span class="role-badge hos">Head of Studies</span>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Dashboard -->
+                <section id="section-dashboard" class="content-section active">
+                    <div class="kpi-grid">
+                        <div class="kpi-card info">
+                            <div class="kpi-icon"><i class="icon-users"></i></div>
+                            <div class="kpi-value" id="kpiStudents">0</div>
+                            <div class="kpi-label">Total Students</div>
+                        </div>
+                        <div class="kpi-card success">
+                            <div class="kpi-icon"><i class="icon-trending-up"></i></div>
+                            <div class="kpi-value" id="kpiMean">0</div>
+                            <div class="kpi-label">Overall Mean</div>
+                        </div>
+                        <div class="kpi-card warning">
+                            <div class="kpi-icon"><i class="icon-percent"></i></div>
+                            <div class="kpi-value" id="kpiPassRate">0%</div>
+                            <div class="kpi-label">Pass Rate</div>
+                        </div>
+                        <div class="kpi-card accent">
+                            <div class="kpi-icon"><i class="icon-life-buoy"></i></div>
+                            <div class="kpi-value" id="kpiInterventions">0</div>
+                            <div class="kpi-label">Active Interventions</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <div class="summary-label">Total Exams</div>
+                            <div class="summary-value" id="summExams">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Subjects</div>
+                            <div class="summary-value" id="summSubjects">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Syllabus Coverage</div>
+                            <div class="summary-value" id="summCoverage">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <h3>Performance by Class</h3>
+                            <canvas id="chartClassPerformance"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Grade Distribution</h3>
+                            <canvas id="chartGrades"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-container full-width">
+                            <h3>Subject Performance</h3>
+                            <canvas id="chartSubjects"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Examinations -->
+                <section id="section-examinations" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showExamModal()">
+                            <i class="icon-plus"></i> Schedule Exam
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Term</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="examsBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Results -->
+                <section id="section-results" class="content-section">
+                    <div class="section-toolbar">
+                        <select id="resultExamFilter" class="filter-select" onchange="loadExamResults()">
+                            <option value="">Select Examination</option>
+                        </select>
+                    </div>
+                    <div id="resultsContent"></div>
+                </section>
+
+                <!-- Targets -->
+                <section id="section-targets" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showTargetModal()">
+                            <i class="icon-plus"></i> Set Target
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Subject</th>
+                                    <th>Target Mean</th>
+                                    <th>Actual Mean</th>
+                                    <th>Target Pass Rate</th>
+                                    <th>Actual Pass Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="targetsBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Interventions -->
+                <section id="section-interventions" class="content-section">
+                    <div class="section-toolbar">
+                        <button class="btn btn-primary" onclick="showInterventionModal()">
+                            <i class="icon-plus"></i> Add Intervention
+                        </button>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Subject</th>
+                                    <th>Type</th>
+                                    <th>Current</th>
+                                    <th>Target</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="interventionsBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Curriculum -->
+                <section id="section-curriculum" class="content-section">
+                    <div class="cards-grid" id="curriculumGrid"></div>
+                </section>
+
+                <!-- Reports -->
+                <section id="section-reports" class="content-section">
+                    <div class="report-cards-grid">
+                        <div class="report-card" onclick="loadClassReport()">
+                            <i class="icon-bar-chart-2"></i>
+                            <h4>Class Performance</h4>
+                            <p>Mean scores, pass rates by class</p>
+                        </div>
+                        <div class="report-card" onclick="loadSubjectReport()">
+                            <i class="icon-book"></i>
+                            <h4>Subject Analysis</h4>
+                            <p>Performance across subjects</p>
+                        </div>
+                    </div>
+                    <div id="reportOutput" class="report-output" style="display:none">
+                        <h3 id="reportTitle"></h3>
+                        <div id="reportContent"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="mainModal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Form</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/utils/auth.js"></script>
+    <script src="/static/js/utils/api.js"></script>
+    <script src="/static/js/pages/hos-portal.js"></script>
+</body>
+</html>

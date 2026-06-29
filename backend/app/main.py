@@ -76,3 +76,23 @@ def teacher_portal():
 @main_bp.route('/finance-portal')
 def finance_portal():
     return render_template('finance/portal.html')
+
+
+@main_bp.route('/deputy-portal')
+def deputy_portal():
+    return render_template('deputy/portal.html')
+
+
+@main_bp.route('/senior-teacher-portal')
+def senior_teacher_portal():
+    return render_template('senior_teacher/portal.html')
+
+
+@main_bp.route('/hos-portal')
+def hos_portal():
+    return render_template('hos/portal.html')
+
+
+@main_bp.route('/class-teacher-portal')
+def class_teacher_portal():
+    return render_template('class_teacher/portal.html')
